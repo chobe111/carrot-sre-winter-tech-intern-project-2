@@ -1,6 +1,6 @@
 import { MysqlConnectionCredentialsOptions } from 'typeorm/driver/mysql/MysqlConnectionCredentialsOptions';
 
-export interface MySQLConfigurationProps {
+export interface MySQLConfigurationType {
   type: 'mysql';
   host: string;
   port: number;
@@ -10,8 +10,11 @@ export interface MySQLConfigurationProps {
   entities: [string];
   synchronize: boolean;
 }
+export interface ConfigurationType {
+  database: MySQLConfigurationType;
+}
 
-const mySQLConfiguration: MySQLConfigurationProps = {
+const mySQLConfiguration: MySQLConfigurationType = {
   type: 'mysql',
   host: process.env.DB_HOST,
   port: parseInt(process.env.DB_PORT),
@@ -22,4 +25,8 @@ const mySQLConfiguration: MySQLConfigurationProps = {
   synchronize: true,
 };
 
-export default () => mySQLConfiguration;
+const configuration = {
+  database: mySQLConfiguration,
+};
+
+export default () => configuration;

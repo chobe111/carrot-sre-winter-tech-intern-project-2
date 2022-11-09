@@ -10,7 +10,7 @@ export class VpcCidrBlockStateEntity {
   @Column({ type: 'enum', enum: CidrState })
   state: CidrState;
 
-  @Column({ default: '' })
+  @Column()
   statusMessage: string;
 
   static create(dto: VpcCidrBlockStateDTO) {

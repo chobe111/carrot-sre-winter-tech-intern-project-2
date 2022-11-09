@@ -1,17 +1,14 @@
-import { Controller, Get, Param, Query, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Query, Res } from '@nestjs/common';
 import { SubnetService } from './subnet.service';
-import { Response } from 'express';
+import { PostSubnetRequestDTO } from './dto/subnet.dto.request';
 @Controller('carrot/v1/subnet')
 export class SubnetController {
   constructor(private readonly subnetService: SubnetService) {}
 
-  @Get('')
-  async getSubnetInformation(@Query('regionName') regionName: string) {
-    return await this.subnetService.getInformation(regionName);
-  }
-
-  @Get('/test')
-  async testSubnetInformation(@Query('regionName') regionName: string) {
-    return await this.subnetService.getInformation(regionName);
+  async createSubnetInforamtion(@Body() postSubnetRequestDTO: PostSubnetRequestDTO) {
+    const { regionName, accessKeyId, secretAccessKey } = postSubnetRequestDTO;
+    const results = await this.subnetService.get(regionName, accessKeyId, secretAccessKey);
+    await this.subnetService.create(results.subnets);
+    return results;
   }
 }

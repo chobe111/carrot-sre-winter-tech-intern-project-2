@@ -1,12 +1,4 @@
-import {
-  Entity,
-  Column,
-  OneToOne,
-  JoinColumn,
-  ManyToOne,
-  PrimaryColumn,
-  JoinTable,
-} from 'typeorm';
+import { Entity, Column, OneToOne, JoinColumn, ManyToOne, PrimaryColumn, JoinTable } from 'typeorm';
 import { VpcIpv6CidrBlockAssociationDTO } from '../dto/vpc.dto';
 import { VpcEntity } from './vpc.entity';
 import { VpcCidrBlockStateEntity } from './vpcCidrBlockState.entity';
@@ -17,7 +9,7 @@ export class VpcIpv6CidrBlockAssociationEntity {
   @PrimaryColumn()
   associationId: string;
 
-  @Column({ type: 'varchar' })
+  @Column()
   ipv6CidrBlock: string;
   //   https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpcCidrBlockState.html
 
@@ -25,10 +17,10 @@ export class VpcIpv6CidrBlockAssociationEntity {
   @JoinTable()
   ipv6CidrBlockState: VpcCidrBlockStateEntity;
 
-  @Column({ type: 'varchar' })
+  @Column()
   ipv6Pool: string;
 
-  @Column({ type: 'varchar' })
+  @Column()
   networkBorderGroup: string;
 
   @ManyToOne(() => VpcEntity, (vpc) => vpc.cidrBlockAssociationSet)
@@ -41,8 +33,7 @@ export class VpcIpv6CidrBlockAssociationEntity {
     vpcIpv6CidrBlockAssociation.ipv6CidrBlock = dto.Ipv6CidrBlock;
 
     // one to one
-    vpcIpv6CidrBlockAssociation.ipv6CidrBlockState =
-      VpcCidrBlockStateEntity.create(dto.Ipv6CidrBlockState);
+    vpcIpv6CidrBlockAssociation.ipv6CidrBlockState = VpcCidrBlockStateEntity.create(dto.Ipv6CidrBlockState);
 
     vpcIpv6CidrBlockAssociation.ipv6Pool = dto.Ipv6Pool;
     vpcIpv6CidrBlockAssociation.networkBorderGroup = dto.NetworkBorderGroup;

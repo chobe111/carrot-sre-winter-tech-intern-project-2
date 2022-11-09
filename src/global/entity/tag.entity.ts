@@ -9,12 +9,9 @@ export type TagDTO = {
 @Entity()
 export class Tag {
   @PrimaryColumn()
-  id: string;
-
-  @Column({ type: 'varchar' })
   key: string;
 
-  @Column({ type: 'varchar' })
+  @PrimaryColumn()
   value: string;
 
   static create(dto: TagDTO) {

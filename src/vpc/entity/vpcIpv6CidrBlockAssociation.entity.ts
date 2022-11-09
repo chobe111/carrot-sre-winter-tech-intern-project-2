@@ -4,10 +4,12 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  PrimaryColumn,
   OneToOne,
   JoinColumn,
   ManyToOne,
+  PrimaryColumn,
+  JoinTable,
+  ManyToMany,
 } from 'typeorm';
 import { VpcIpv6CidrBlockAssociationDTO } from '../dto/vpc.dto';
 import { Vpc } from './vpc.entity';
@@ -16,15 +18,15 @@ import { VpcCidrBlockState } from './vpcCidrBlockState.entity';
 // https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpcIpv6CidrBlockAssociation.html
 @Entity()
 export class VpcIpv6CidrBlockAssociation {
-  @PrimaryColumn({ type: 'varchar' })
+  @PrimaryColumn()
   associationId: string;
 
   @Column({ type: 'varchar' })
   ipv6CidrBlock: string;
   //   https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpcCidrBlockState.html
 
-  @OneToOne(() => VpcCidrBlockState)
-  @JoinColumn({ name: 'cidrBlockStateId' })
+  @ManyToMany(() => VpcCidrBlockState)
+  @JoinTable()
   ipv6CidrBlockState: VpcCidrBlockState;
 
   @Column({ type: 'varchar' })
@@ -39,7 +41,6 @@ export class VpcIpv6CidrBlockAssociation {
 
   static create(dto: VpcIpv6CidrBlockAssociationDTO) {
     const vpcIpv6CidrBlockAssociation = new VpcIpv6CidrBlockAssociation();
-
     vpcIpv6CidrBlockAssociation.associationId = dto.AssociationId;
     vpcIpv6CidrBlockAssociation.ipv6CidrBlock = dto.Ipv6CidrBlock;
 

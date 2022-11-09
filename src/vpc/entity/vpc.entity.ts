@@ -1,11 +1,11 @@
 import {
   Entity,
   Column,
-  PrimaryGeneratedColumn,
   PrimaryColumn,
   OneToMany,
   ManyToMany,
   JoinTable,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { VpcDTO } from '../dto/vpc.dto';
 import { VpcCidrBlockAssociation } from './vpcCidrBlockAssociation.entity';
@@ -24,7 +24,7 @@ export enum VPCState {
 
 @Entity()
 export class Vpc {
-  @PrimaryColumn({ type: 'varchar' })
+  @PrimaryColumn({})
   vpcId: string;
 
   @Column({ nullable: true, type: 'varchar' })
@@ -33,7 +33,8 @@ export class Vpc {
   // one to many
   @OneToMany(
     () => VpcCidrBlockAssociation,
-    (vpcAssocition) => vpcAssocition.associationId,
+    (vpcAssocition) => vpcAssocition.vpc,
+    { cascade: true },
   )
   cidrBlockAssociationSet: VpcCidrBlockAssociation[];
 
@@ -46,10 +47,10 @@ export class Vpc {
   // one to many (this is unique)
   @OneToMany(
     () => VpcIpv6CidrBlockAssociation,
-    (vpcIpv6CidrBlockAssociation) => vpcIpv6CidrBlockAssociation.associationId,
+    (vpcIpv6CidrBlockAssociation) => vpcIpv6CidrBlockAssociation.vpc,
+    { cascade: true },
   )
   ipv6CidrBlockAssociationSet: VpcIpv6CidrBlockAssociation[];
-
   @Column({ nullable: true, type: 'bool' })
   isDefault: boolean;
 
@@ -60,19 +61,20 @@ export class Vpc {
   state: VPCState;
 
   //FK
-  @ManyToMany(() => Tag)
+  @ManyToMany(() => Tag, { cascade: true })
   @JoinTable()
   tags: Tag[];
 
   static create(dto: VpcDTO) {
     const vpc = new Vpc();
-
     vpc.cidrBlock = dto.CidrBlock;
     vpc.cidrBlockAssociationSet = dto.CidrBlockAssociationSet.map((cbas) =>
       VpcCidrBlockAssociation.create(cbas),
     );
+
     vpc.dhcpOptionsId = dto.DhcpOptionsId;
     vpc.instanceTenancy = dto.InstanceTenancy as InstanceTenancy;
+
     vpc.ipv6CidrBlockAssociationSet = dto.Ipv6CidrBlockAssociationSet.map(
       (icbas) => VpcIpv6CidrBlockAssociation.create(icbas),
     );
@@ -80,8 +82,9 @@ export class Vpc {
     vpc.isDefault = dto.IsDefault;
     vpc.ownerId = dto.OwnerId;
     vpc.state = dto.State as VPCState;
-
     vpc.tags = dto.Tags.map((tag) => Tag.create(tag as TagDTO));
+    vpc.vpcId = dto.VpcId;
+
     return vpc;
   }
 }

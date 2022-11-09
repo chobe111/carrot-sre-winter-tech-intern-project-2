@@ -7,17 +7,15 @@ export enum CidrState {
   DISASSOCIATING = 'disassociationg',
   FAILING = 'failing',
   FAILED = 'failed',
+  EMPTY = '',
 }
 
 @Entity()
 export class VpcCidrBlockState {
-  @PrimaryGeneratedColumn()
-  id: string;
-
-  @Column({ type: 'enum', enum: CidrState })
+  @PrimaryColumn()
   state: CidrState;
 
-  @Column({ type: 'varchar' })
+  @PrimaryColumn({ default: '' })
   statusMessage: string;
 
   static create(dto: VpcCidrBlockStateDTO) {

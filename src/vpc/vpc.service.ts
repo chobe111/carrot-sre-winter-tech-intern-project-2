@@ -3,13 +3,15 @@ import * as AWS from 'aws-sdk';
 import { AwsService } from 'src/aws/aws.service';
 import { promisify } from 'node:util';
 import { VpcInformationResults } from './dto/vpc.response';
-import { Vpc } from './entity/vpc.entity';
+import { Vpc, VPCState } from './entity/vpc.entity';
+import { Repository } from 'typeorm';
+import { VpcList } from 'aws-sdk/clients/ec2';
 
 @Injectable()
 export class VpcService {
   constructor(
     private readonly awsService: AwsService,
-    @Inject('VPC_REPOSITORY') private readonly vpcRepository,
+    @Inject('VPC_REPOSITORY') private readonly vpcRepository: Repository<Vpc>,
   ) {}
 
   // 분리
@@ -25,13 +27,23 @@ export class VpcService {
     const vpcs = results.Vpcs;
     const nextToken = results.NextToken;
 
+    await this.createInformation(vpcs);
+
     return {
       vpcs,
       nextToken,
     };
   }
 
-  async createInformation() {}
+  async createInformation(vpcs: VpcList) {
+    // 캐시 로직 작성
+    for (const i of vpcs) {
+      const vpc = Vpc.create(i);
+      const state = vpc.state;
+
+      this.vpcRepository.save(vpc);
+    }
+  }
 }
 
 // ('/vpc/create');

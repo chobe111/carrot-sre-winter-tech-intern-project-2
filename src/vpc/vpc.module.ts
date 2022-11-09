@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
 import { VpcService } from './vpc.service';
 import { AwsService } from 'src/aws/aws.service';
-import { DatabaseModule } from 'src/database/database.module';
+import { VpcProviders } from './providers/vpc.providers';
+import { VpcController } from './vpc.controller';
 @Module({
-  imports: [DatabaseModule],
-  providers: [VpcService, AwsService],
+  providers: [VpcService, ...VpcProviders],
+  controllers: [VpcController],
+  exports: [VpcService, ...VpcProviders],
 })
 export class VpcModule {}

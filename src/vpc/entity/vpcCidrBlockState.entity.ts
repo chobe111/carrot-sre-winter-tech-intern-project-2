@@ -1,17 +1,21 @@
 import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn } from 'typeorm';
 
-export type CidrState =
-  | 'associating'
-  | 'associated'
-  | 'disassociating'
-  | 'disassociated'
-  | 'failing'
-  | 'failed';
+export enum CidrState {
+  ASSOCIATING = 'associating',
+  ASSOCIATED = 'associated',
+  DISASSOCIATING = 'disassociationg',
+  FAILING = 'failing',
+  FAILED = 'failed',
+}
+
 @Entity()
 export class VpcCidrBlockState {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   id: string;
 
+  @Column({ type: 'enum', enum: CidrState })
   state: CidrState;
+
+  @Column({ type: 'varchar' })
   statusMessage: string;
 }

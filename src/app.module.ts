@@ -12,17 +12,19 @@ import { ConfigModule } from '@nestjs/config';
 import { AwsService } from './aws/aws.service';
 import { AwsModule } from './aws/aws.module';
 import configuration from './configs/configuration';
+import { DatabaseModule } from './database/database.module';
 @Module({
   imports: [
     VpcModule,
+    DatabaseModule,
+    AwsModule,
     SubnetModule,
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],
     }),
-    AwsModule,
   ],
-  controllers: [AppController, VpcController, SubnetController],
-  providers: [AppService, VpcService, SubnetService, RegionService, AwsService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

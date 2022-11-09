@@ -1,34 +1,66 @@
-import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  PrimaryColumn,
+  OneToMany,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
+
+import { VpcCidrBlockAssociation } from './vpcCidrBlockAssociation.entity';
+import { VpcIpv6CidrBlockAssociation } from './vpcIpv6CidrBlockAssociation.entity';
+import { Tag } from 'src/global/entity/tag.entity';
+export enum InstanceTenancy {
+  DEFAULT = 'default',
+  DEDICATED = 'dedicated',
+  HOST = 'host',
+}
+
+export enum VPCState {
+  PENDING = 'pending',
+  AVAILABLE = 'available',
+}
+
 @Entity()
 export class Vpc {
-  @PrimaryColumn()
+  @PrimaryColumn({ type: 'varchar' })
   vpcId: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'varchar' })
   cidrBlock: string;
 
-  @Column({ nullable: true })
-  cidrBlockAssociationSet: string;
+  // one to many
+  @OneToMany(
+    () => VpcCidrBlockAssociation,
+    (vpcAssocition) => vpcAssocition.associationId,
+  )
+  cidrBlockAssociationSet: VpcCidrBlockAssociation[];
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'varchar' })
   dhcpOptionsId: string;
 
-  @Column({ nullable: true })
-  instanceTenancy: string;
+  @Column({ nullable: true, type: 'enum', enum: InstanceTenancy })
+  instanceTenancy: InstanceTenancy;
 
-  @Column({ nullable: true })
+  // one to many (this is unique)
+  @OneToMany(
+    () => VpcIpv6CidrBlockAssociation,
+    (vpcIpv6CidrBlockAssociation) => vpcIpv6CidrBlockAssociation.associationId,
+  )
   ipv6CidrBlockAssociationSet: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'bool' })
   isDefault: boolean;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'varchar' })
   ownerId: string;
 
-  @Column({ nullable: true })
-  state: string;
+  @Column({ nullable: true, type: 'enum', enum: VPCState })
+  state: VPCState;
 
   //FK
-  @Column({ nullable: true })
-  tagSet: string;
+  @ManyToMany(() => Tag)
+  @JoinTable()
+  tags: Tag[];
 }

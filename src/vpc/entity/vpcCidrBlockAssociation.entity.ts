@@ -1,14 +1,31 @@
-import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  PrimaryColumn,
+  OneToOne,
+  JoinColumn,
+  ManyToOne,
+} from 'typeorm';
+
+import { Vpc } from './vpc.entity';
+import { VpcCidrBlockState } from './vpcCidrBlockState.entity';
 
 // https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpcCidrBlockAssociation.html
 @Entity()
 export class VpcCidrBlockAssociation {
-  @PrimaryColumn()
-  id: string;
-
+  @PrimaryColumn({ type: 'varchar' })
   associationId: string;
-  cidrBlock: string;
 
+  @Column({ type: 'varchar' })
+  cidrBlock: string;
   // https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpcCidrBlockState.html
-  cidrBlockState: string;
+
+  @OneToOne(() => VpcCidrBlockState)
+  @JoinColumn({ name: 'cidrBlockStateId' })
+  cidrBlockState: VpcCidrBlockState;
+
+  @ManyToOne(() => Vpc, (vpc) => vpc.cidrBlockAssociationSet)
+  @JoinColumn({ name: 'vpcId' })
+  vpc: Vpc;
 }

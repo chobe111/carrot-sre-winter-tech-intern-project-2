@@ -6,6 +6,7 @@ import {
   OneToOne,
   PrimaryColumn,
 } from 'typeorm';
+import { SubnetIpv6CidrBlockAssociationDTO } from '../dto/subnet.dto';
 import { SubnetEntity } from './subnet.entity';
 import { SubnetCidrBlockStateEntity } from './subnetCidrBlockState.entity';
 // https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_SubnetIpv6CidrBlockAssociation.html
@@ -27,4 +28,15 @@ export class SubnetIpv6CidrBlockAssociationEntity {
   )
   @JoinColumn({ name: 'subnetId' })
   subnet: SubnetEntity;
+
+  static create(dto: SubnetIpv6CidrBlockAssociationDTO) {
+    const subnetIpv6CidrBlockAssociation =
+      new SubnetIpv6CidrBlockAssociationEntity();
+    subnetIpv6CidrBlockAssociation.associationId = dto.AssociationId;
+    subnetIpv6CidrBlockAssociation.ipv6CidrBlock = dto.Ipv6CidrBlock;
+    subnetIpv6CidrBlockAssociation.ipv6CidrBlockState =
+      SubnetCidrBlockStateEntity.create(dto.Ipv6CidrBlockState);
+
+    return subnetIpv6CidrBlockAssociation;
+  }
 }

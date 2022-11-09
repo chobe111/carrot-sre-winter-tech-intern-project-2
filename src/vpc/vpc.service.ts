@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import * as AWS from 'aws-sdk';
 import { AwsService } from 'src/aws/aws.service';
 import { promisify } from 'node:util';
-import { VpcInformationResults } from './dto/vpc.response';
+import { VpcInformationResults } from './dto/vpc.dto.response';
 import { VpcEntity } from './entity/vpc.entity';
 import { Repository } from 'typeorm';
 import { VpcList } from 'aws-sdk/clients/ec2';
@@ -19,7 +19,7 @@ export class VpcService {
   async crawlInformation(
     regionName: RegionType,
   ): Promise<VpcInformationResults> {
-    const ec2 = await this.awsService.getInstance(regionName);
+    const ec2 = await this.awsService.getInstance(regionName, '', '');
 
     const describeVpcsAsync = promisify<
       AWS.EC2.Types.DescribeVpcsRequest,
@@ -46,23 +46,3 @@ export class VpcService {
     }
   }
 }
-
-// ('/vpc/create');
-// ('/vpc/list');
-// ('/subnet/create');
-// ('/subnet/list/ytrfhuh');
-
-// ('/{c}/{methodName}');
-
-// const services: { [key: string]: IService | undefined } = {
-//   vpcs: new VpcService(),
-//   subnets: new SubnetService(),
-// };
-
-// const serviceName = "vpcs";
-
-// const service = services[serviceName];
-
-// if (methodName === 'create') {
-//   service.getInformation();
-// }

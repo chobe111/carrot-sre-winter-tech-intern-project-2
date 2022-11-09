@@ -12,79 +12,119 @@ import {
 } from 'typeorm';
 import { State } from 'src/global/types/state';
 import { SubnetIpv6CidrBlockAssociationEntity } from './subnetIpv6CidrBlockAssociation.entity';
-import { TagEntity } from 'src/global/entity/tag.entity';
+import { TagDTO, TagEntity } from 'src/global/entity/tag.entity';
 import { PrivateDnsNameOptionsOnLaunchEntity } from './privateDnsNameOptionsOnLaunch.entity';
+import { SubnetDTO } from '../dto/subnet.dto';
 @Entity()
 export class SubnetEntity {
-  @Column()
+  @Column({ nullable: true })
   assignIpv6AddressOnCreation: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   availabilityZone: string;
 
-  @Column()
+  @Column({ nullable: true })
   availabilityZoneId: string;
 
-  @Column()
-  availableIpAddressCount: string;
+  @Column({ nullable: true })
+  availableIpAddressCount: number;
 
-  @Column()
+  @Column({ nullable: true })
   cidrBlock: string;
 
-  @Column()
+  @Column({ nullable: true })
   customerOwnedIpv4Pool: string;
 
-  @Column()
+  @Column({ nullable: true })
   defaultForAz: boolean;
 
   @Column()
   enableDns64: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   enableLniAtDeviceIndex: number;
 
   @OneToMany(
     () => SubnetIpv6CidrBlockAssociationEntity,
     (subnetIpv6CidrBlockAssociationEntity) =>
       subnetIpv6CidrBlockAssociationEntity.subnet,
-    { cascade: true },
+    { cascade: true, nullable: true },
   )
-  ipv6CidrBlockAssociationSet: SubnetIpv6CidrBlockAssociationEntity;
+  ipv6CidrBlockAssociationSet: SubnetIpv6CidrBlockAssociationEntity[];
 
-  @Column()
+  @Column({ nullable: true })
   ipv6Native: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   mapCustomerOwnedIpOnLaunch: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   mapPublicIpOnLaunch: boolean;
 
-  @Column()
-  outpostArn: boolean;
+  @Column({ nullable: true })
+  outpostArn: string;
 
-  @Column()
+  @Column({ nullable: true })
   ownerId: string;
 
-  @OneToOne(() => PrivateDnsNameOptionsOnLaunchEntity, { cascade: true })
+  @OneToOne(() => PrivateDnsNameOptionsOnLaunchEntity, {
+    cascade: true,
+    nullable: true,
+  })
   @JoinColumn()
   privateDnsNameOptionsOnLaunch: PrivateDnsNameOptionsOnLaunchEntity;
 
-  @Column({ type: 'enum', enum: State })
+  @Column({ type: 'enum', enum: State, nullable: true })
   state: State;
 
-  @Column()
+  @Column({ nullable: true })
   subnetArn: string;
 
   @PrimaryColumn()
   subnetId: string;
 
-  @ManyToMany(() => TagEntity, { cascade: true })
+  @ManyToMany(() => TagEntity, { cascade: true, nullable: true })
   @JoinTable()
-  tags: TagEntity;
+  tags: TagEntity[];
 
-  @Column()
+  @Column({ nullable: true })
   vpcId: string;
 
-  static create(dto) {}
+  static create(dto: SubnetDTO) {
+    const subnet = new SubnetEntity();
+
+    subnet.assignIpv6AddressOnCreation = dto.AssignIpv6AddressOnCreation;
+    subnet.availabilityZone = dto.AvailabilityZone;
+    subnet.availabilityZoneId = dto.AvailabilityZoneId;
+    subnet.availableIpAddressCount = dto.AvailableIpAddressCount;
+    subnet.cidrBlock = dto.CidrBlock;
+    subnet.customerOwnedIpv4Pool = dto.CustomerOwnedIpv4Pool;
+    subnet.defaultForAz = dto.DefaultForAz;
+    subnet.enableDns64 = dto.EnableDns64;
+    subnet.enableLniAtDeviceIndex = dto.EnableLniAtDeviceIndex;
+
+    subnet.ipv6CidrBlockAssociationSet = dto.Ipv6CidrBlockAssociationSet.map(
+      (data) => SubnetIpv6CidrBlockAssociationEntity.create(data),
+    );
+
+    subnet.ipv6Native = dto.Ipv6Native;
+    subnet.mapCustomerOwnedIpOnLaunch = dto.MapCustomerOwnedIpOnLaunch;
+    subnet.mapPublicIpOnLaunch = dto.MapCustomerOwnedIpOnLaunch;
+    subnet.outpostArn = dto.OutpostArn;
+    subnet.ownerId = dto.OwnerId;
+
+    subnet.privateDnsNameOptionsOnLaunch =
+      PrivateDnsNameOptionsOnLaunchEntity.create(
+        dto.PrivateDnsNameOptionsOnLaunch,
+      );
+    subnet.state = dto.State as State;
+
+    subnet.subnetArn = dto.SubnetArn;
+    subnet.subnetId = dto.SubnetId;
+
+    subnet.tags = dto.Tags.map((tag) => TagEntity.create(tag as TagDTO));
+    subnet.vpcId = dto.VpcId;
+
+    return subnet;
+  }
 }

@@ -5,7 +5,6 @@ import {
   OneToMany,
   ManyToMany,
   JoinTable,
-  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { VpcDTO } from '../dto/vpc.dto';
 import { VpcCidrBlockAssociationEntity } from './vpcCidrBlockAssociation.entity';

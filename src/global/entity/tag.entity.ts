@@ -8,10 +8,13 @@ export type TagDTO = {
 
 @Entity()
 export class TagEntity {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
   key: string;
 
-  @PrimaryColumn()
+  @Column()
   value: string;
 
   static create(dto: TagDTO) {

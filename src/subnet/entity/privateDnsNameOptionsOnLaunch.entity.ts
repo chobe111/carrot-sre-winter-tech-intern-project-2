@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { PrivateDnsNameOptionsOnLaunchDTO } from '../dto/subnet.dto';
 
 export enum HostnameEnum {
   IP_NAME = 'ip-name',
@@ -18,4 +19,18 @@ export class PrivateDnsNameOptionsOnLaunchEntity {
 
   @Column({ type: 'enum', enum: HostnameEnum })
   hostnameType: HostnameEnum;
+
+  static create(dto: PrivateDnsNameOptionsOnLaunchDTO) {
+    const privateDnsNameOptionsOnLaunch =
+      new PrivateDnsNameOptionsOnLaunchEntity();
+
+    privateDnsNameOptionsOnLaunch.enableResourceNameDnsAAAARecord =
+      dto.EnableResourceNameDnsAAAARecord;
+    privateDnsNameOptionsOnLaunch.enableResourceNameDnsARecord =
+      dto.EnableResourceNameDnsARecord;
+    privateDnsNameOptionsOnLaunch.hostnameType =
+      dto.HostnameType as HostnameEnum;
+
+    return privateDnsNameOptionsOnLaunch;
+  }
 }

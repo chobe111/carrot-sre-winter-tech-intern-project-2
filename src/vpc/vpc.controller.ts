@@ -1,7 +1,7 @@
-import { Controller, Get, Query } from '@nestjs/common';
-import { VpcResponse } from './dto/vpc.response';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { VpcResponse } from './dto/vpc.dto.response';
 import { VpcService } from './vpc.service';
-
+import * as asdf from '@aws-sdk/credential-providers';
 @Controller('carrot/v1/vpc')
 export class VpcController {
   constructor(private readonly vpcService: VpcService) {}
@@ -23,4 +23,10 @@ export class VpcController {
       data: result,
     };
   }
+
+  @Post()
+  async createVPCInformation() {}
+
+  @Post()
+  async createVPCInformationTest(@Body() createVPCInformationRequestBody) {}
 }

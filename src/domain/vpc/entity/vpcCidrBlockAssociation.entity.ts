@@ -9,12 +9,12 @@ export class VpcCidrBlockAssociationEntity {
   @PrimaryColumn()
   associationId: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   cidrBlock: string;
   // https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpcCidrBlockState.html
 
   @OneToOne(() => VpcCidrBlockStateEntity, { cascade: true })
-  @JoinTable()
+  @JoinColumn()
   cidrBlockState: VpcCidrBlockStateEntity;
 
   @ManyToOne(() => VpcEntity, (vpc) => vpc.cidrBlockAssociationSet)

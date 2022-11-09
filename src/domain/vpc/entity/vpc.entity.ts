@@ -15,26 +15,26 @@ export class VpcEntity {
   @PrimaryColumn({})
   vpcId: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'varchar' })
   cidrBlock: string;
 
   // one to many
   @OneToMany(() => VpcCidrBlockAssociationEntity, (vpcAssocition) => vpcAssocition.vpc, { cascade: true })
   cidrBlockAssociationSet: VpcCidrBlockAssociationEntity[];
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'varchar' })
   dhcpOptionsId: string;
 
   @Column({ nullable: true, type: 'enum', enum: InstanceTenancy })
   instanceTenancy: InstanceTenancy;
 
   // one to many (this is unique)
-  @OneToMany(() => VpcIpv6CidrBlockAssociationEntity, (vpcIpv6CidrBlockAssociation) => vpcIpv6CidrBlockAssociation.vpc, { cascade: true })
+  @OneToMany(() => VpcIpv6CidrBlockAssociationEntity, (vpcIpv6CidrBlockAssociation) => vpcIpv6CidrBlockAssociation.vpc, { cascade: true, nullable: true })
   ipv6CidrBlockAssociationSet: VpcIpv6CidrBlockAssociationEntity[];
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'bool' })
   isDefault: boolean;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'varchar' })
   ownerId: string;
 
   @Column({ nullable: true, type: 'enum', enum: State })

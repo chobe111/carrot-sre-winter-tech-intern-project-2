@@ -1,7 +1,13 @@
-export interface PostRequestDTO {
-  regionName: string;
+import { DescribeVpcsResult } from '@aws-sdk/client-ec2';
+
+export interface AWSInstanceConfig {
+  region: string;
   accessKeyId: string;
   secretAccessKey: string;
+}
+
+export interface PostRequestDTO {
+  config: AWSInstanceConfig;
 }
 
 export interface GetRequestDTO {

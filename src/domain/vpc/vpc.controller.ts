@@ -6,8 +6,9 @@ export class VpcController {
   constructor(private readonly vpcService: VpcService) {}
   @Post()
   async createVPCInformation(@Body() postVpcRequestDTO: PostVpcRequestDTO) {
-    const { regionName, accessKeyId, secretAccessKey } = postVpcRequestDTO;
-    const results = await this.vpcService.get(regionName, accessKeyId, secretAccessKey);
+    const { config, filter } = postVpcRequestDTO;
+    console.log(postVpcRequestDTO);
+    const results = await this.vpcService.get(config, filter);
     await this.vpcService.create(results.vpcs);
     return results;
   }

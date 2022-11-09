@@ -3,6 +3,7 @@ import * as AWS from 'aws-sdk';
 import { ConfigurationOptions } from 'aws-sdk';
 import { APIVersions } from 'aws-sdk/lib/config';
 import { ConfigurationServicePlaceholders } from 'aws-sdk/lib/config_service_placeholders';
+import { AWSInstanceConfig } from 'src/global/dto/request';
 @Injectable()
 export class AWSService {
   private apiVersion;
@@ -14,11 +15,9 @@ export class AWSService {
     AWS.config.update(option);
   }
 
-  async getInstance(regionName: string, accessKeyId: string, secretAccessKey: string) {
+  async getInstance(awsInstanceConfig: AWSInstanceConfig) {
     await this.update({
-      accessKeyId: accessKeyId,
-      secretAccessKey: secretAccessKey,
-      region: regionName,
+      ...awsInstanceConfig,
       apiVersion: this.apiVersion,
     });
     return new AWS.EC2({});

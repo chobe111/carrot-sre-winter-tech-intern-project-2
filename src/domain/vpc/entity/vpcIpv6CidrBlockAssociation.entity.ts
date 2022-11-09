@@ -9,7 +9,7 @@ export class VpcIpv6CidrBlockAssociationEntity {
   @PrimaryColumn()
   associationId: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   ipv6CidrBlock: string;
   //   https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpcCidrBlockState.html
 
@@ -17,13 +17,13 @@ export class VpcIpv6CidrBlockAssociationEntity {
   @JoinTable()
   ipv6CidrBlockState: VpcCidrBlockStateEntity;
 
-  @Column()
+  @Column({ type: 'varchar' })
   ipv6Pool: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   networkBorderGroup: string;
 
-  @ManyToOne(() => VpcEntity, (vpc) => vpc.cidrBlockAssociationSet)
+  @ManyToOne(() => VpcEntity, (vpc) => vpc.ipv6CidrBlockAssociationSet, { nullable: true })
   @JoinColumn({ name: 'vpcId' })
   vpc: VpcEntity;
 

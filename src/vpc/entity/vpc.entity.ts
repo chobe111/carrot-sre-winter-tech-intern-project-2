@@ -8,22 +8,18 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { VpcDTO } from '../dto/vpc.dto';
-import { VpcCidrBlockAssociation } from './vpcCidrBlockAssociation.entity';
-import { VpcIpv6CidrBlockAssociation } from './vpcIpv6CidrBlockAssociation.entity';
-import { Tag, TagDTO } from 'src/global/entity/tag.entity';
+import { VpcCidrBlockAssociationEntity } from './vpcCidrBlockAssociation.entity';
+import { VpcIpv6CidrBlockAssociationEntity } from './vpcIpv6CidrBlockAssociation.entity';
+import { TagEntity, TagDTO } from 'src/global/entity/tag.entity';
+import { State } from 'src/global/types/state';
 export enum InstanceTenancy {
   DEFAULT = 'default',
   DEDICATED = 'dedicated',
   HOST = 'host',
 }
 
-export enum VPCState {
-  PENDING = 'pending',
-  AVAILABLE = 'available',
-}
-
 @Entity()
-export class Vpc {
+export class VpcEntity {
   @PrimaryColumn({})
   vpcId: string;
 
@@ -32,11 +28,11 @@ export class Vpc {
 
   // one to many
   @OneToMany(
-    () => VpcCidrBlockAssociation,
+    () => VpcCidrBlockAssociationEntity,
     (vpcAssocition) => vpcAssocition.vpc,
     { cascade: true },
   )
-  cidrBlockAssociationSet: VpcCidrBlockAssociation[];
+  cidrBlockAssociationSet: VpcCidrBlockAssociationEntity[];
 
   @Column({ nullable: true, type: 'varchar' })
   dhcpOptionsId: string;
@@ -46,43 +42,44 @@ export class Vpc {
 
   // one to many (this is unique)
   @OneToMany(
-    () => VpcIpv6CidrBlockAssociation,
+    () => VpcIpv6CidrBlockAssociationEntity,
     (vpcIpv6CidrBlockAssociation) => vpcIpv6CidrBlockAssociation.vpc,
     { cascade: true },
   )
-  ipv6CidrBlockAssociationSet: VpcIpv6CidrBlockAssociation[];
+  ipv6CidrBlockAssociationSet: VpcIpv6CidrBlockAssociationEntity[];
   @Column({ nullable: true, type: 'bool' })
   isDefault: boolean;
 
   @Column({ nullable: true, type: 'varchar' })
   ownerId: string;
 
-  @Column({ nullable: true, type: 'enum', enum: VPCState })
-  state: VPCState;
+  @Column({ nullable: true, type: 'enum', enum: State })
+  state: State;
 
   //FK
-  @ManyToMany(() => Tag, { cascade: true })
+  @ManyToMany(() => TagEntity, { cascade: true })
   @JoinTable()
-  tags: Tag[];
+  tags: TagEntity[];
 
   static create(dto: VpcDTO) {
-    const vpc = new Vpc();
+    const vpc = new VpcEntity();
     vpc.cidrBlock = dto.CidrBlock;
+
     vpc.cidrBlockAssociationSet = dto.CidrBlockAssociationSet.map((cbas) =>
-      VpcCidrBlockAssociation.create(cbas),
+      VpcCidrBlockAssociationEntity.create(cbas),
     );
 
     vpc.dhcpOptionsId = dto.DhcpOptionsId;
     vpc.instanceTenancy = dto.InstanceTenancy as InstanceTenancy;
 
     vpc.ipv6CidrBlockAssociationSet = dto.Ipv6CidrBlockAssociationSet.map(
-      (icbas) => VpcIpv6CidrBlockAssociation.create(icbas),
+      (icbas) => VpcIpv6CidrBlockAssociationEntity.create(icbas),
     );
 
     vpc.isDefault = dto.IsDefault;
     vpc.ownerId = dto.OwnerId;
-    vpc.state = dto.State as VPCState;
-    vpc.tags = dto.Tags.map((tag) => Tag.create(tag as TagDTO));
+    vpc.state = dto.State as State;
+    vpc.tags = dto.Tags.map((tag) => TagEntity.create(tag as TagDTO));
     vpc.vpcId = dto.VpcId;
 
     return vpc;

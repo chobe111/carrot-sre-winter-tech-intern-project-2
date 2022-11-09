@@ -19,7 +19,6 @@ export class SubnetService {
 
     const subnets = results.Subnets;
     const nextToken = results.NextToken;
-
     return {
       subnets,
       nextToken,

@@ -12,12 +12,12 @@ import {
   ManyToMany,
 } from 'typeorm';
 import { VpcIpv6CidrBlockAssociationDTO } from '../dto/vpc.dto';
-import { Vpc } from './vpc.entity';
-import { VpcCidrBlockState } from './vpcCidrBlockState.entity';
+import { VpcEntity } from './vpc.entity';
+import { VpcCidrBlockStateEntity } from './vpcCidrBlockState.entity';
 
 // https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpcIpv6CidrBlockAssociation.html
 @Entity()
-export class VpcIpv6CidrBlockAssociation {
+export class VpcIpv6CidrBlockAssociationEntity {
   @PrimaryColumn()
   associationId: string;
 
@@ -25,9 +25,9 @@ export class VpcIpv6CidrBlockAssociation {
   ipv6CidrBlock: string;
   //   https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpcCidrBlockState.html
 
-  @ManyToMany(() => VpcCidrBlockState)
+  @OneToOne(() => VpcCidrBlockStateEntity, { cascade: true })
   @JoinTable()
-  ipv6CidrBlockState: VpcCidrBlockState;
+  ipv6CidrBlockState: VpcCidrBlockStateEntity;
 
   @Column({ type: 'varchar' })
   ipv6Pool: string;
@@ -35,19 +35,18 @@ export class VpcIpv6CidrBlockAssociation {
   @Column({ type: 'varchar' })
   networkBorderGroup: string;
 
-  @ManyToOne(() => Vpc, (vpc) => vpc.cidrBlockAssociationSet)
+  @ManyToOne(() => VpcEntity, (vpc) => vpc.cidrBlockAssociationSet)
   @JoinColumn({ name: 'vpcId' })
-  vpc: Vpc;
+  vpc: VpcEntity;
 
   static create(dto: VpcIpv6CidrBlockAssociationDTO) {
-    const vpcIpv6CidrBlockAssociation = new VpcIpv6CidrBlockAssociation();
+    const vpcIpv6CidrBlockAssociation = new VpcIpv6CidrBlockAssociationEntity();
     vpcIpv6CidrBlockAssociation.associationId = dto.AssociationId;
     vpcIpv6CidrBlockAssociation.ipv6CidrBlock = dto.Ipv6CidrBlock;
 
     // one to one
-    vpcIpv6CidrBlockAssociation.ipv6CidrBlockState = VpcCidrBlockState.create(
-      dto.Ipv6CidrBlockState,
-    );
+    vpcIpv6CidrBlockAssociation.ipv6CidrBlockState =
+      VpcCidrBlockStateEntity.create(dto.Ipv6CidrBlockState);
 
     vpcIpv6CidrBlockAssociation.ipv6Pool = dto.Ipv6Pool;
     vpcIpv6CidrBlockAssociation.networkBorderGroup = dto.NetworkBorderGroup;

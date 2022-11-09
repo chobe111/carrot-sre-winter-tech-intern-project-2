@@ -7,7 +7,7 @@ export type TagDTO = {
 };
 
 @Entity()
-export class Tag {
+export class TagEntity {
   @PrimaryColumn()
   key: string;
 
@@ -15,7 +15,7 @@ export class Tag {
   value: string;
 
   static create(dto: TagDTO) {
-    const tag = new Tag();
+    const tag = new TagEntity();
     tag.key = dto.Key;
     tag.value = dto.Value;
 

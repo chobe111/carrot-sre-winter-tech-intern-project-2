@@ -3,19 +3,22 @@ import * as AWS from 'aws-sdk';
 import { AwsService } from 'src/aws/aws.service';
 import { promisify } from 'node:util';
 import { VpcInformationResults } from './dto/vpc.response';
-import { Vpc, VPCState } from './entity/vpc.entity';
+import { VpcEntity, State } from './entity/vpc.entity';
 import { Repository } from 'typeorm';
 import { VpcList } from 'aws-sdk/clients/ec2';
-
+import { RegionType } from 'aws-sdk/clients/directoryservice';
 @Injectable()
 export class VpcService {
   constructor(
     private readonly awsService: AwsService,
-    @Inject('VPC_REPOSITORY') private readonly vpcRepository: Repository<Vpc>,
+    @Inject('VPC_REPOSITORY')
+    private readonly vpcRepository: Repository<VpcEntity>,
   ) {}
 
   // 분리
-  async crawlInformation(regionName): Promise<VpcInformationResults> {
+  async crawlInformation(
+    regionName: RegionType,
+  ): Promise<VpcInformationResults> {
     const ec2 = await this.awsService.getInstance(regionName);
 
     const describeVpcsAsync = promisify<
@@ -38,7 +41,7 @@ export class VpcService {
   async createInformation(vpcs: VpcList) {
     // 캐시 로직 작성
     for (const i of vpcs) {
-      const vpc = Vpc.create(i);
+      const vpc = VpcEntity.create(i);
       const state = vpc.state;
 
       this.vpcRepository.save(vpc);

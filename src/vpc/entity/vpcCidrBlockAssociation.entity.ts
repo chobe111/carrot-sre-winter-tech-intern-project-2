@@ -10,12 +10,12 @@ import {
   JoinTable,
 } from 'typeorm';
 
-import { Vpc } from './vpc.entity';
-import { VpcCidrBlockState } from './vpcCidrBlockState.entity';
+import { VpcEntity } from './vpc.entity';
+import { VpcCidrBlockStateEntity } from './vpcCidrBlockState.entity';
 import { VpcCidrBlockAssociationDTO } from '../dto/vpc.dto';
 // https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpcCidrBlockAssociation.html
 @Entity()
-export class VpcCidrBlockAssociation {
+export class VpcCidrBlockAssociationEntity {
   @PrimaryColumn()
   associationId: string;
 
@@ -23,20 +23,20 @@ export class VpcCidrBlockAssociation {
   cidrBlock: string;
   // https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpcCidrBlockState.html
 
-  @ManyToMany(() => VpcCidrBlockState)
+  @OneToOne(() => VpcCidrBlockStateEntity, { cascade: true })
   @JoinTable()
-  cidrBlockState: VpcCidrBlockState;
+  cidrBlockState: VpcCidrBlockStateEntity;
 
-  @ManyToOne(() => Vpc, (vpc) => vpc.cidrBlockAssociationSet)
+  @ManyToOne(() => VpcEntity, (vpc) => vpc.cidrBlockAssociationSet)
   @JoinColumn({ name: 'vpcId' })
-  vpc: Vpc;
+  vpc: VpcEntity;
 
   static create(dto: VpcCidrBlockAssociationDTO) {
-    const vpcCidrBlockAssociation = new VpcCidrBlockAssociation();
+    const vpcCidrBlockAssociation = new VpcCidrBlockAssociationEntity();
     vpcCidrBlockAssociation.associationId = dto.AssociationId;
     vpcCidrBlockAssociation.cidrBlock = dto.CidrBlock;
     // // one to one create
-    vpcCidrBlockAssociation.cidrBlockState = VpcCidrBlockState.create(
+    vpcCidrBlockAssociation.cidrBlockState = VpcCidrBlockStateEntity.create(
       dto.CidrBlockState,
     );
     return vpcCidrBlockAssociation;

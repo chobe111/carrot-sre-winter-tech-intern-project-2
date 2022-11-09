@@ -9,6 +9,8 @@ import { SubnetService } from './subnet/subnet.service';
 import { SubnetModule } from './subnet/subnet.module';
 import { RegionService } from './region/region.service';
 import { ConfigModule } from '@nestjs/config';
+import { AwsService } from './aws/aws.service';
+import { AwsModule } from './aws/aws.module';
 import configuration from './configs/configuration';
 @Module({
   imports: [
@@ -18,8 +20,9 @@ import configuration from './configs/configuration';
       isGlobal: true,
       load: [configuration],
     }),
+    AwsModule,
   ],
   controllers: [AppController, VpcController, SubnetController],
-  providers: [AppService, VpcService, SubnetService, RegionService],
+  providers: [AppService, VpcService, SubnetService, RegionService, AwsService],
 })
 export class AppModule {}

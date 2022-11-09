@@ -1,4 +1,7 @@
 import { MysqlConnectionCredentialsOptions } from 'typeorm/driver/mysql/MysqlConnectionCredentialsOptions';
+import * as dotenv from 'dotenv';
+
+dotenv.config({ path: '.development.env' });
 
 export interface MySQLConfigurationType {
   type: 'mysql';
@@ -10,6 +13,7 @@ export interface MySQLConfigurationType {
   entities: [string];
   synchronize: boolean;
 }
+
 export interface ConfigurationType {
   database: MySQLConfigurationType;
 }

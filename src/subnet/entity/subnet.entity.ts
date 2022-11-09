@@ -66,7 +66,7 @@ export class SubnetEntity {
   @Column()
   ownerId: string;
 
-  @OneToOne(() => PrivateDnsNameOptionsOnLaunchEntity)
+  @OneToOne(() => PrivateDnsNameOptionsOnLaunchEntity, { cascade: true })
   @JoinColumn()
   privateDnsNameOptionsOnLaunch: PrivateDnsNameOptionsOnLaunchEntity;
 
@@ -85,4 +85,6 @@ export class SubnetEntity {
 
   @Column()
   vpcId: string;
+
+  static create(dto) {}
 }

@@ -3,7 +3,7 @@ import * as AWS from 'aws-sdk';
 import { AwsService } from 'src/aws/aws.service';
 import { promisify } from 'node:util';
 import { VpcInformationResults } from './dto/vpc.response';
-import { VpcEntity, State } from './entity/vpc.entity';
+import { VpcEntity } from './entity/vpc.entity';
 import { Repository } from 'typeorm';
 import { VpcList } from 'aws-sdk/clients/ec2';
 import { RegionType } from 'aws-sdk/clients/directoryservice';
@@ -42,8 +42,6 @@ export class VpcService {
     // 캐시 로직 작성
     for (const i of vpcs) {
       const vpc = VpcEntity.create(i);
-      const state = vpc.state;
-
       this.vpcRepository.save(vpc);
     }
   }

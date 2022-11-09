@@ -7,12 +7,12 @@ export class VpcController {
 
   @Get()
   async getVPCInformation(@Query('regionName') regionName: string) {
-    const result = await this.vpcService.getInformation(regionName);
+    const result = await this.vpcService.crawlInformation(regionName);
     return result;
   }
 
   @Get('/test')
   async getVPCInformationTest(@Query('regionName') regionName: string) {
-    return await this.vpcService.getInformation(regionName);
+    return await this.vpcService.crawlInformation(regionName);
   }
 }

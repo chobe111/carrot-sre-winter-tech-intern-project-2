@@ -1,15 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import * as AWS from 'aws-sdk';
 import { AwsService } from 'src/aws/aws.service';
 import { promisify } from 'node:util';
-import { SubnetService } from 'src/subnet/subnet.service';
+import { VpcInformationResults } from './dto/vpc.response';
+import { Vpc } from './entity/vpc.entity';
 
 @Injectable()
 export class VpcService {
-  constructor(private readonly awsService: AwsService) {}
+  constructor(
+    private readonly awsService: AwsService,
+    @Inject('VPC_REPOSITORY') private readonly vpcRepository,
+  ) {}
 
   // 분리
-  async getInformation(regionName) {
+  async crawlInformation(regionName): Promise<VpcInformationResults> {
     const ec2 = await this.awsService.getInstance(regionName);
 
     const describeVpcsAsync = promisify<

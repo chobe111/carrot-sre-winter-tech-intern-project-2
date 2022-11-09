@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn } from 'typeorm';
+import { VpcCidrBlockStateDTO } from '../dto/vpc.dto';
 
 export enum CidrState {
   ASSOCIATING = 'associating',
@@ -18,4 +19,11 @@ export class VpcCidrBlockState {
 
   @Column({ type: 'varchar' })
   statusMessage: string;
+
+  static create(dto: VpcCidrBlockStateDTO) {
+    const vpcCidrBlockState = new VpcCidrBlockState();
+    vpcCidrBlockState.state = dto.State as CidrState;
+    vpcCidrBlockState.statusMessage = dto.StatusMessage;
+    return vpcCidrBlockState;
+  }
 }

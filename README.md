@@ -32,7 +32,7 @@ $ yarn start:dev
 
 # Prerequisite
 
-로컬 환경에 도커가 설치있어야합니다. [installation](https://docs.docker.com/engine/install/)
+로컬 환경에 도커가 설치있어야합니다. [Installation](https://docs.docker.com/engine/install/)
 
 도커를 설치한 이후 프로젝트 폴더의 sciprt/setting_mysql.sh 파일을 실행시킵니다.
 
@@ -61,9 +61,9 @@ AWS API 를 통해 가져온 정보를 데이터베이스에 저장하고 Respon
 **Parameter**
 
 | Name   | Type                | Description                                                              |
-| ------ | ------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------ |
+| ------ | ------------------- | ------------------------------------------------------------------------ |
 | config | AWSInstanceConfig   | 특정 계정의 특정 리전에 대한 AWS API 객체 생성을 위해 필요한 정보입니다. |
-| filter | DescribeVpcsRequest | undefined                                                                | 특정 조건에 맞는 VPC 정보를 가져오기 위해 필요한 정보입니다. |
+| filter | DescribeVpcsRequest | 특정 조건에 맞는 VPC 정보를 가져오기 위해 필요한 정보입니다.             |
 
 ### Response
 
@@ -88,10 +88,10 @@ Content-type: application/json;charset=utf-8
 
 **Parameter**
 
-| Name       | Type                     | Description                |
-| ---------- | ------------------------ | -------------------------- | ----------------------------------------------------------------------- |
-| account_id | string                   | AWS 계정 정보를 입력합니다 |
-| filter     | DescribeCacheVpcsRequest | undefined                  | 데이터베이스에 저장되어있는 VPC 정보를 가져오기 위해 필요한 정보입니다. |
+| Name       | Type                     | Description                                                                                       |
+| ---------- | ------------------------ | ------------------------------------------------------------------------------------------------- |
+| account_id | string                   | AWS 계정 정보를 입력합니다                                                                        |
+| filter     | DescribeCacheVpcsRequest | 데이터베이스에 저장되어있는 VPC 데티어중 특정 조건에 맞는 정보를 가져오기 위해 필요한 정보입니다. |
 
 ### Response
 
@@ -116,16 +116,16 @@ Content-type: application/json;charset=utf-8
 | Name   | Type                   | Description                                                              |
 | ------ | ---------------------- | ------------------------------------------------------------------------ |
 | config | AWSInstanceConfig      | 특정 계정의 특정 리전에 대한 AWS API 객체 생성을 위해 필요한 정보입니다. |
-| filter | DescribeSubnetsRequest | 특정 조건에 맞는 VPC 정보를 가져오기 위해 필요한 정보입니다.             |
+| filter | DescribeSubnetsRequest | 특정 조건에 맞는 Subnet 정보를 가져오기 위해 필요한 정보입니다.          |
 
 ### Response
 
 **Parameter**
 
-| Name      | Type     | Description                                                              |
-| --------- | -------- | ------------------------------------------------------------------------ | ------------------------------------------------------------ |
-| subnets   | Subnet[] | 특정 계정의 특정 리전에 대한 AWS API 객체 생성을 위해 필요한 정보입니다. |
-| nextToken | string   | undefined                                                                | 특정 조건에 맞는 VPC 정보를 가져오기 위해 필요한 정보입니다. |
+| Name      | Type     | Description                                  |
+| --------- | -------- | -------------------------------------------- |
+| subnets   | Subnet[] | 생성된 Subnet 정보입니다.                    |
+| nextToken | string   | 다음 페이지 결과를 조회하기 위한 토큰입니다. |
 
 ## SUBNET 정보 가져오기
 
@@ -141,10 +141,10 @@ Content-type: application/json;charset=utf-8
 
 **Parameter**
 
-| Name       | Type                        | Description                |
-| ---------- | --------------------------- | -------------------------- | -------------------------------------------------------------------------- |
-| account_id | string                      | AWS 계정 정보를 입력합니다 |
-| filter     | DescribeCacheSubnetsRequest | undefined                  | 데이터베이스에 저장되어있는 Subnet 정보를 가져오기 위해 필요한 정보입니다. |
+| Name       | Type                        | Description                                                                                          |
+| ---------- | --------------------------- | ---------------------------------------------------------------------------------------------------- |
+| account_id | string                      | AWS 계정 정보를 입력합니다                                                                           |
+| filter     | DescribeCacheSubnetsRequest | 데이터베이스에 저장되어있는 Subnet 데티어중 특정 조건에 맞는 정보를 가져오기 위해 필요한 정보입니다. |
 
 ### Response
 

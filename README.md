@@ -1,6 +1,6 @@
 # README
 
-![Untitled](https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fd1e99fcb-48f7-4ad6-adc5-8d30e102844a%2F%25EB%25A9%2594%25EC%259D%25B8%25EC%259D%25B4%25EB%25AF%25B8%25EC%25A7%2580.png&blockId=3cabbb83-ef9b-47bb-9dd7-70229c32a2a4.png)
+![Untitled](https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fd1e99fcb-48f7-4ad6-adc5-8d30e102844a%2F%25EB%25A9%2594%25EC%259D%25B8%25EC%259D%25B4%25EB%25AF%25B8%25EC%25A7%2580.png&blockId=3cabbb83-ef9b-47bb-9dd7-70229c32a2a4)
 
 ---
 

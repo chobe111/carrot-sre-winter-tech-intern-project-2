@@ -2,11 +2,7 @@
 
 ![Untitled](https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fd1e99fcb-48f7-4ad6-adc5-8d30e102844a%2F%25EB%25A9%2594%25EC%259D%25B8%25EC%259D%25B4%25EB%25AF%25B8%25EC%25A7%2580.png&blockId=3cabbb83-ef9b-47bb-9dd7-70229c32a2a4)
 
----
-
 # Description
-
----
 
 본 레포지토리는 **[2022 당근 마켓 WINTERTECH INTERNSHIP]** 의 **사이트 신뢰성 엔지니어(SRE)** 분야의 2번 과제를 구현한 결과물입니다.
 
@@ -20,15 +16,11 @@ NestJS 프레임워크를 사용해 구현했으며 특정 사용자가 **계정
 
 # Installation
 
----
-
 ```bash
 $ yarn
 ```
 
 # Running the app
-
----
 
 ```bash
 # development
@@ -39,8 +31,6 @@ $ yarn start:dev
 ```
 
 # Prerequisite
-
----
 
 로컬 환경에 도커가 설치있어야합니다. [installation](https://docs.docker.com/engine/install/)
 
@@ -53,8 +43,6 @@ $ yarn start:dev
 해당 쉘 스크립트를 실행시키면 로컬 환경에 MySQL 데이터베이스 프로세스가 실행됩니다.
 
 # API
-
----
 
 문제에서 요구하는 각 리전에 해당하는 VPC 정보와 Subnet 정보를 가져오기 위한 API 를 정의했습니다.
 
@@ -186,8 +174,6 @@ AWS 환경에 맞추어 특정 계정의 데이터베이스 데이터를 동기�
 
 # Type
 
----
-
 ## AWSInstanceConfig
 
 특정 계정의 특정 리전에 대한 AWS API 인스턴스를 생성하기 위해 필요한 정보입니다.
@@ -251,8 +237,6 @@ AWS에 존재하고 특정 조건에 만족하는 Subnet 정보를 얻어오기 
 상세정보: [https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/APIReference/API_Subnet.html](https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/APIReference/API_Subnet.html)
 
 # Contact
-
----
 
 - **Author** - Myungki Cho
 - **Email** - chobe0719@gmail.com

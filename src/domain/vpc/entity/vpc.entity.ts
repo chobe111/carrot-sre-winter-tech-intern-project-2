@@ -5,6 +5,7 @@ import { VpcIpv6CidrBlockAssociationEntity } from './vpcIpv6CidrBlockAssociation
 import { TagEntity, TagDTO } from 'src/global/entity/tag.entity';
 import { State } from 'src/global/types/state';
 import { SubnetEntity } from 'src/domain/subnet/entity/subnet.entity';
+import { RegionNameEnum } from 'src/global/types/region';
 export enum InstanceTenancy {
   DEFAULT = 'default',
   DEDICATED = 'dedicated',
@@ -49,6 +50,10 @@ export class VpcEntity {
   @JoinTable()
   tags: TagEntity[];
 
+  @Column({ type: 'enum', enum: RegionNameEnum })
+  region: RegionNameEnum;
+
+  @Column({ nullable: true })
   static create(dto: VpcDTO) {
     const vpc = new VpcEntity();
     vpc.cidrBlock = dto.CidrBlock;
@@ -65,6 +70,7 @@ export class VpcEntity {
     vpc.state = dto.State as State;
     vpc.tags = dto.Tags.map((tag) => TagEntity.create(tag as TagDTO));
     vpc.vpcId = dto.VpcId;
+    vpc.region = dto.region as RegionNameEnum;
 
     return vpc;
   }

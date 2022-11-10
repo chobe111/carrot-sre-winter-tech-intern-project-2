@@ -7,6 +7,7 @@ import { TagDTO, TagEntity } from 'src/global/entity/tag.entity';
 import { PrivateDnsNameOptionsOnLaunchEntity } from './privateDnsNameOptionsOnLaunch.entity';
 import { SubnetDTO } from '../dto/subnet.dto';
 import { VpcEntity } from 'src/domain/vpc/entity/vpc.entity';
+import { RegionNameEnum } from 'src/global/types/region';
 @Entity()
 export class SubnetEntity {
   @Column({ nullable: true })

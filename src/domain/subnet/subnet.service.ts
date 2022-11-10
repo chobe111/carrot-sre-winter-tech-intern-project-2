@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { DescribeSubnetsRequest, DescribeVpcsRequest, SubnetList } from 'aws-sdk/clients/ec2';
+import { DescribeSubnetsRequest, SubnetList } from 'aws-sdk/clients/ec2';
 import { promisify } from 'node:util';
 import { AWSService } from 'src/aws/aws.service';
 import { AWSInstanceConfig } from 'src/global/dto/request';

@@ -1,5 +1,4 @@
-import { TagSpecificationFilterSensitiveLog } from '@aws-sdk/client-ec2';
-import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 export type TagDTO = {
   Key: string;

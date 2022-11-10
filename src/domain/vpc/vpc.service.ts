@@ -6,7 +6,6 @@ import { VpcInformationResults } from './dto/vpc.dto.response';
 import { VpcEntity } from './entity/vpc.entity';
 import { Repository } from 'typeorm';
 import { VpcList } from 'aws-sdk/clients/ec2';
-import { RegionType } from 'aws-sdk/clients/directoryservice';
 import { DescribeVpcsRequest } from 'aws-sdk/clients/ec2';
 import { AWSInstanceConfig } from 'src/global/dto/request';
 @Injectable()
@@ -17,7 +16,7 @@ export class VpcService {
     private readonly vpcRepository: Repository<VpcEntity>,
   ) {}
 
-  async get(config: AWSInstanceConfig, filter: DescribeVpcsRequest): Promise<VpcInformationResults> {
+  async getAWSResource(config: AWSInstanceConfig, filter: DescribeVpcsRequest): Promise<VpcInformationResults> {
     const ec2 = await this.awsService.getInstance(config);
     const describeVpcsAsync = promisify<AWS.EC2.Types.DescribeVpcsRequest, AWS.EC2.Types.DescribeVpcsResult>(ec2.describeVpcs.bind(ec2));
     const results = await describeVpcsAsync(filter);
@@ -29,11 +28,12 @@ export class VpcService {
     };
   }
 
-  async create(vpcs: VpcList) {
-    console.log(vpcs);
+  async createAWSResource(vpcs: VpcList): Promise<void> {
     for (const i of vpcs) {
       const vpc = VpcEntity.create(i);
       this.vpcRepository.save(vpc);
     }
   }
+
+  async getDatabaseResource() {}
 }

@@ -1,20 +1,12 @@
 // https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeSubnets.html
 // https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Subnet.html
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  JoinTable,
-  ManyToMany,
-  OneToMany,
-  OneToOne,
-  PrimaryColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
 import { State } from 'src/global/types/state';
 import { SubnetIpv6CidrBlockAssociationEntity } from './subnetIpv6CidrBlockAssociation.entity';
 import { TagDTO, TagEntity } from 'src/global/entity/tag.entity';
 import { PrivateDnsNameOptionsOnLaunchEntity } from './privateDnsNameOptionsOnLaunch.entity';
 import { SubnetDTO } from '../dto/subnet.dto';
+import { VpcEntity } from 'src/domain/vpc/entity/vpc.entity';
 @Entity()
 export class SubnetEntity {
   @Column({ nullable: true })
@@ -44,12 +36,10 @@ export class SubnetEntity {
   @Column({ nullable: true })
   enableLniAtDeviceIndex: number;
 
-  @OneToMany(
-    () => SubnetIpv6CidrBlockAssociationEntity,
-    (subnetIpv6CidrBlockAssociationEntity) =>
-      subnetIpv6CidrBlockAssociationEntity.subnet,
-    { cascade: true, nullable: true },
-  )
+  @OneToMany(() => SubnetIpv6CidrBlockAssociationEntity, (subnetIpv6CidrBlockAssociationEntity) => subnetIpv6CidrBlockAssociationEntity.subnet, {
+    cascade: true,
+    nullable: true,
+  })
   ipv6CidrBlockAssociationSet: SubnetIpv6CidrBlockAssociationEntity[];
 
   @Column({ nullable: true })
@@ -87,7 +77,8 @@ export class SubnetEntity {
   @JoinTable()
   tags: TagEntity[];
 
-  @Column({ nullable: true })
+  @ManyToOne(() => VpcEntity, (vpcEntity) => vpcEntity.subnets)
+  @JoinColumn({ name: 'vpcId' })
   vpcId: string;
 
   static create(dto: SubnetDTO) {
@@ -103,9 +94,7 @@ export class SubnetEntity {
     subnet.enableDns64 = dto.EnableDns64;
     subnet.enableLniAtDeviceIndex = dto.EnableLniAtDeviceIndex;
 
-    subnet.ipv6CidrBlockAssociationSet = dto.Ipv6CidrBlockAssociationSet.map(
-      (data) => SubnetIpv6CidrBlockAssociationEntity.create(data),
-    );
+    subnet.ipv6CidrBlockAssociationSet = dto.Ipv6CidrBlockAssociationSet.map((data) => SubnetIpv6CidrBlockAssociationEntity.create(data));
 
     subnet.ipv6Native = dto.Ipv6Native;
     subnet.mapCustomerOwnedIpOnLaunch = dto.MapCustomerOwnedIpOnLaunch;
@@ -113,10 +102,7 @@ export class SubnetEntity {
     subnet.outpostArn = dto.OutpostArn;
     subnet.ownerId = dto.OwnerId;
 
-    subnet.privateDnsNameOptionsOnLaunch =
-      PrivateDnsNameOptionsOnLaunchEntity.create(
-        dto.PrivateDnsNameOptionsOnLaunch,
-      );
+    subnet.privateDnsNameOptionsOnLaunch = PrivateDnsNameOptionsOnLaunchEntity.create(dto.PrivateDnsNameOptionsOnLaunch);
     subnet.state = dto.State as State;
 
     subnet.subnetArn = dto.SubnetArn;

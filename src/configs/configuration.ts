@@ -1,7 +1,6 @@
-import { MysqlConnectionCredentialsOptions } from 'typeorm/driver/mysql/MysqlConnectionCredentialsOptions';
 import * as dotenv from 'dotenv';
 
-dotenv.config({ path: '.development.env' });
+dotenv.config({ path: '.test.env' });
 
 export interface MySQLConfigurationType {
   type: 'mysql';

@@ -7,13 +7,13 @@ export type TagDTO = {
 
 @Entity()
 export class TagEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: 'integer' })
   id: number;
 
-  @Column()
+  @Column({ type: 'string' })
   key: string;
 
-  @Column()
+  @Column({ type: 'string' })
   value: string;
 
   static create(dto: TagDTO) {

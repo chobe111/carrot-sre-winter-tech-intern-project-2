@@ -1,16 +1,15 @@
-import { CidrState } from 'src/global/types/state';
-import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { VpcCidrBlockStateDTO } from '../dto/vpc.dto';
 
 @Entity()
 export class VpcCidrBlockStateEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: 'integer' })
   id: number;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'string' })
   state: string;
 
-  @Column({ default: '', nullable: true })
+  @Column({ default: '', nullable: true, type: 'string' })
   statusMessage: string;
 
   static create(dto: VpcCidrBlockStateDTO) {

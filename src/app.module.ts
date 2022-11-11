@@ -5,7 +5,6 @@ import { AwsModule } from './aws/aws.module';
 import configuration from './configs/configuration';
 import { DatabaseModule } from './database/database.module';
 import { VpcModule } from './domain/vpc/vpc.module';
-import { CacheModule } from './domain/cache/cache.module';
 
 @Module({
   imports: [
@@ -17,7 +16,6 @@ import { CacheModule } from './domain/cache/cache.module';
       isGlobal: true,
       load: [configuration],
     }),
-    CacheModule,
   ],
 })
 export class AppModule {}

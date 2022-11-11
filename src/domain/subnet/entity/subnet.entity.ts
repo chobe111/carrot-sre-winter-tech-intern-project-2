@@ -7,31 +7,31 @@ import { PrivateDnsNameOptionsOnLaunchEntity } from './privateDnsNameOptionsOnLa
 import { SubnetDTO } from '../dto/subnet.dto';
 @Entity()
 export class SubnetEntity {
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'boolean' })
   assignIpv6AddressOnCreation: boolean;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'string' })
   availabilityZone: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'string' })
   availabilityZoneId: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'integer' })
   availableIpAddressCount: number;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'string' })
   cidrBlock: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'string' })
   customerOwnedIpv4Pool: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'boolean' })
   defaultForAz: boolean;
 
-  @Column()
+  @Column({ nullable: true, type: 'boolean' })
   enableDns64: boolean;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'integer' })
   enableLniAtDeviceIndex: number;
 
   @OneToMany(() => SubnetIpv6CidrBlockAssociationEntity, (subnetIpv6CidrBlockAssociationEntity) => subnetIpv6CidrBlockAssociationEntity.subnet, {
@@ -40,19 +40,19 @@ export class SubnetEntity {
   })
   ipv6CidrBlockAssociationSet: SubnetIpv6CidrBlockAssociationEntity[];
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'boolean' })
   ipv6Native: boolean;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'boolean' })
   mapCustomerOwnedIpOnLaunch: boolean;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'boolean' })
   mapPublicIpOnLaunch: boolean;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'string' })
   outpostArn: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'string' })
   ownerId: string;
 
   @OneToOne(() => PrivateDnsNameOptionsOnLaunchEntity, {
@@ -62,20 +62,20 @@ export class SubnetEntity {
   @JoinColumn()
   privateDnsNameOptionsOnLaunch: PrivateDnsNameOptionsOnLaunchEntity;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'string' })
   state: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'string' })
   subnetArn: string;
 
-  @PrimaryColumn()
+  @PrimaryColumn({ type: 'string' })
   subnetId: string;
 
   @ManyToMany(() => TagEntity, { cascade: true, nullable: true })
   @JoinTable()
   tags: TagEntity[];
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'string' })
   vpcId: string;
 
   static create(dto: SubnetDTO) {

@@ -8,16 +8,16 @@ export enum HostnameEnum {
 
 @Entity()
 export class PrivateDnsNameOptionsOnLaunchEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: 'integer' })
   id: number;
 
-  @Column()
+  @Column({ type: 'boolean' })
   enableResourceNameDnsAAAARecord: boolean;
 
-  @Column()
+  @Column({ type: 'boolean' })
   enableResourceNameDnsARecord: boolean;
 
-  @Column()
+  @Column({ type: 'boolean' })
   hostnameType: string;
 
   static create(dto: PrivateDnsNameOptionsOnLaunchDTO) {

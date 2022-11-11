@@ -3,13 +3,13 @@ import { SubnetCidrBlockStateDTO } from '../dto/subnet.dto';
 
 @Entity()
 export class SubnetCidrBlockStateEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: 'integer' })
   id: number;
 
-  @Column()
+  @Column({ type: 'string' })
   state: string;
 
-  @Column()
+  @Column({ type: 'string' })
   statusMessage: string;
 
   static create(dto: SubnetCidrBlockStateDTO) {

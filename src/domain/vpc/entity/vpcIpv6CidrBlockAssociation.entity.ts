@@ -6,7 +6,7 @@ import { VpcCidrBlockStateEntity } from './vpcCidrBlockState.entity';
 // https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpcIpv6CidrBlockAssociation.html
 @Entity()
 export class VpcIpv6CidrBlockAssociationEntity {
-  @PrimaryColumn()
+  @PrimaryColumn({ type: 'string' })
   associationId: string;
 
   @Column({ type: 'string' })

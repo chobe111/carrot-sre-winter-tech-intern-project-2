@@ -8,8 +8,8 @@ export class SubnetController {
   @Post()
   async createSubnetInforamtion(@Body() postSubnetRequestDTO: PostSubnetRequestDTO) {
     const { config, filter } = postSubnetRequestDTO;
-    const results = await this.subnetService.get(config, filter);
-    await this.subnetService.create(results.subnets);
+    const results = await this.subnetService.getAWSResource(config, filter);
+    await this.subnetService.saveAWSResource(results.subnets);
     return results;
   }
 }

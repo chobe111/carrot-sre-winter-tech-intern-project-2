@@ -11,5 +11,5 @@ export interface PostRequestDTO {
 
 export interface GetRequestDTO {
   ownerId: string;
-  region: string;
+  region: RegionNameType;
 }

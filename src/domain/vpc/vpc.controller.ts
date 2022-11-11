@@ -9,7 +9,7 @@ export class VpcController {
     const { config, filter } = postVpcRequestDTO;
     console.log(postVpcRequestDTO);
     const results = await this.vpcService.getAWSResource(config, filter);
-    await this.vpcService.createAWSResource(results.vpcs);
+    await this.vpcService.saveAWSResource(results.vpcs, config.region);
     return results;
   }
 }

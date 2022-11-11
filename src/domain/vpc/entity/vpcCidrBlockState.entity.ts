@@ -7,15 +7,15 @@ export class VpcCidrBlockStateEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'enum', enum: CidrState })
-  state: CidrState;
+  @Column({ nullable: true })
+  state: string;
 
-  @Column({ default: '' })
+  @Column({ default: '', nullable: true })
   statusMessage: string;
 
   static create(dto: VpcCidrBlockStateDTO) {
     const vpcCidrBlockState = new VpcCidrBlockStateEntity();
-    vpcCidrBlockState.state = dto.State as CidrState;
+    vpcCidrBlockState.state = dto.State;
     vpcCidrBlockState.statusMessage = dto.StatusMessage;
     return vpcCidrBlockState;
   }

@@ -4,7 +4,6 @@ import { VpcCidrBlockAssociationEntity } from './vpcCidrBlockAssociation.entity'
 import { VpcIpv6CidrBlockAssociationEntity } from './vpcIpv6CidrBlockAssociation.entity';
 import { TagEntity, TagDTO } from 'src/global/entity/tag.entity';
 import { State } from 'src/global/types/state';
-import { SubnetEntity } from 'src/domain/subnet/entity/subnet.entity';
 import { RegionNameEnum } from 'src/global/types/region';
 export enum InstanceTenancy {
   DEFAULT = 'default',
@@ -41,9 +40,6 @@ export class VpcEntity {
 
   @Column({ nullable: true, type: 'enum', enum: State })
   state: State;
-
-  @OneToMany(() => SubnetEntity, (subnetEntity) => subnetEntity.vpcId)
-  subnets: SubnetEntity[];
 
   //FK
   @ManyToMany(() => TagEntity, { cascade: true })

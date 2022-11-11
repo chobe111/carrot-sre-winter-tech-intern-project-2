@@ -17,19 +17,15 @@ export class PrivateDnsNameOptionsOnLaunchEntity {
   @Column()
   enableResourceNameDnsARecord: boolean;
 
-  @Column({ type: 'enum', enum: HostnameEnum })
-  hostnameType: HostnameEnum;
+  @Column()
+  hostnameType: string;
 
   static create(dto: PrivateDnsNameOptionsOnLaunchDTO) {
-    const privateDnsNameOptionsOnLaunch =
-      new PrivateDnsNameOptionsOnLaunchEntity();
+    const privateDnsNameOptionsOnLaunch = new PrivateDnsNameOptionsOnLaunchEntity();
 
-    privateDnsNameOptionsOnLaunch.enableResourceNameDnsAAAARecord =
-      dto.EnableResourceNameDnsAAAARecord;
-    privateDnsNameOptionsOnLaunch.enableResourceNameDnsARecord =
-      dto.EnableResourceNameDnsARecord;
-    privateDnsNameOptionsOnLaunch.hostnameType =
-      dto.HostnameType as HostnameEnum;
+    privateDnsNameOptionsOnLaunch.enableResourceNameDnsAAAARecord = dto.EnableResourceNameDnsAAAARecord;
+    privateDnsNameOptionsOnLaunch.enableResourceNameDnsARecord = dto.EnableResourceNameDnsARecord;
+    privateDnsNameOptionsOnLaunch.hostnameType = dto.HostnameType;
 
     return privateDnsNameOptionsOnLaunch;
   }

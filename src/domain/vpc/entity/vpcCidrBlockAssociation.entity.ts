@@ -1,8 +1,8 @@
 import { Entity, Column, OneToOne, JoinColumn, ManyToOne, PrimaryGeneratedColumn, PrimaryColumn, ManyToMany, JoinTable } from 'typeorm';
 
-import VpcEntity from './vpc.entity';
 import { VpcCidrBlockStateEntity } from './vpcCidrBlockState.entity';
 import { VpcCidrBlockAssociationDTO } from '../dto/vpc.dto';
+import { VpcEntity } from './vpc.entity';
 // https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpcCidrBlockAssociation.html
 @Entity()
 export class VpcCidrBlockAssociationEntity {

@@ -1,13 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { AWSService } from 'src/aws/aws.service';
 import { promisify } from 'node:util';
-import { VpcInformationResults } from './dto/vpc.dto.response';
+import { PostVpcResultsDTO } from './dto/vpc.dto.response';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { VpcList } from 'aws-sdk/clients/ec2';
 import { DescribeVpcsRequest } from 'aws-sdk/clients/ec2';
 import { AWSInstanceConfig } from 'src/global/dto/request';
-import { GetVpcRequestDTO } from './dto/vpc.dto.request';
-import { RegionNameEnum, RegionNameType } from 'src/global/types/region';
+import { DescribeCacheVpcsRequest, GetVpcRequestDTO } from './dto/vpc.dto.request';
+import { RegionNameType } from 'src/global/types/region';
 import { VpcEntity } from './entity/vpc.entity';
 import { instanceToPlain } from 'class-transformer';
 import { DescribeVpcsResult } from 'aws-sdk/clients/ec2';
@@ -20,7 +20,7 @@ export class VpcService {
     private readonly vpcRepository: Repository<VpcEntity>,
   ) {}
 
-  async getAWSResource(config: AWSInstanceConfig, filter: DescribeVpcsRequest): Promise<VpcInformationResults> {
+  async getAWSResource(config: AWSInstanceConfig, filter: DescribeVpcsRequest): Promise<PostVpcResultsDTO> {
     const ec2 = await this.awsService.getInstance(config);
     const describeVpcsAsync = promisify<DescribeVpcsRequest, DescribeVpcsResult>(ec2.describeVpcs.bind(ec2));
     const results = await describeVpcsAsync(filter);
@@ -39,14 +39,15 @@ export class VpcService {
     }
   }
 
-  async getDatabaseResource({ filter, region, ownerId }: GetVpcRequestDTO) {
-    const queryWhere: FindOptionsWhere<VpcEntity>[] = filter.VpcIds.map((id) => ({
-      vpcId: id,
-      region: region as RegionNameEnum,
-      ownerId: ownerId,
-    }));
+  async getFilterOptions(filter: DescribeCacheVpcsRequest, ownerId: string): Promise<FindOptionsWhere<VpcEntity> | FindOptionsWhere<VpcEntity>[] | undefined> {
+    return filter && filter.VpcIds && filter.VpcIds.map((id) => ({ vpcId: id, ownerId: ownerId }));
+  }
 
-    const vpcEntityList: VpcEntity[] = await this.vpcRepository.findBy(queryWhere);
+  async getDatabaseResource({ filter, region, ownerId }: GetVpcRequestDTO) {
+    const vpcEntityList: VpcEntity[] = await this.vpcRepository.find({
+      relations: ['cidrBlockAssociationSet', 'cidrBlockAssociationSet.cidrBlockState', 'ipv6CidrBlockAssociationSet', 'tags'],
+      where: await this.getFilterOptions(filter, ownerId),
+    });
     const vpcList = vpcEntityList.map((vpcEntity) => instanceToPlain(vpcEntity));
 
     return vpcList;

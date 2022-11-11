@@ -1,12 +1,10 @@
 // https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeSubnets.html
 // https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Subnet.html
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
-import { State } from 'src/global/types/state';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
 import { SubnetIpv6CidrBlockAssociationEntity } from './subnetIpv6CidrBlockAssociation.entity';
 import { TagDTO, TagEntity } from 'src/global/entity/tag.entity';
 import { PrivateDnsNameOptionsOnLaunchEntity } from './privateDnsNameOptionsOnLaunch.entity';
 import { SubnetDTO } from '../dto/subnet.dto';
-import { VpcEntity } from 'src/domain/vpc/entity/vpc.entity';
 @Entity()
 export class SubnetEntity {
   @Column({ nullable: true })
@@ -64,8 +62,8 @@ export class SubnetEntity {
   @JoinColumn()
   privateDnsNameOptionsOnLaunch: PrivateDnsNameOptionsOnLaunchEntity;
 
-  @Column({ type: 'enum', enum: State, nullable: true })
-  state: State;
+  @Column({ nullable: true })
+  state: string;
 
   @Column({ nullable: true })
   subnetArn: string;
@@ -77,8 +75,7 @@ export class SubnetEntity {
   @JoinTable()
   tags: TagEntity[];
 
-  @ManyToOne(() => VpcEntity, (vpcEntity) => vpcEntity.subnets)
-  @JoinColumn({ name: 'vpcId' })
+  @Column({ nullable: true })
   vpcId: string;
 
   static create(dto: SubnetDTO) {
@@ -103,7 +100,7 @@ export class SubnetEntity {
     subnet.ownerId = dto.OwnerId;
 
     subnet.privateDnsNameOptionsOnLaunch = PrivateDnsNameOptionsOnLaunchEntity.create(dto.PrivateDnsNameOptionsOnLaunch);
-    subnet.state = dto.State as State;
+    subnet.state = dto.State;
 
     subnet.subnetArn = dto.SubnetArn;
     subnet.subnetId = dto.SubnetId;

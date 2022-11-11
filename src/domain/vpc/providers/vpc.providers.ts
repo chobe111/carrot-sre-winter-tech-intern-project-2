@@ -1,5 +1,5 @@
 import { DataSource, Repository } from 'typeorm';
-import VpcEntity from '../entity/vpc.entity';
+import { VpcEntity } from '../entity/vpc.entity';
 
 export const VpcProviders = [
   {

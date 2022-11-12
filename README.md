@@ -8,10 +8,34 @@
 
 **[NestJS](https://nestjs.com/)** 프레임워크를 사용해 REST API 서버를 구현했으며 특정 사용자가 **계정 정보**와 **리전 정보** 그리고 **필터링 정보**를 AWS 자원을 데이터베이스에 생성하고 데이터베이스에 존재하는 자원을 얻어 올 수 있도록 구현했습니다.
 
+# Prerequisite
+
+## Database
+
+로컬 환경에 도커가 설치되어있어야합니다. [installation](https://docs.docker.com/engine/install/)
+
+## Yarn
+
+로컬 환경에 yarn 이 설치되어있어야합니다. [installation](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)
+
+### 데이터베이스 정보
+
+| Name        | Value     |
+| ----------- | --------- |
+| DB_PORT     | 3306      |
+| DB_USERNAME | root      |
+| DB_PASSWORD | 1234      |
+| DB_NAME     | carrot    |
+| DB_HOST     | localhost |
+
 # Installation
 
+프로젝트 폴더의 script/start_server.sh 파일을 실행해 노드 패키지를 설치하고 MySQL 데이터베이스 프로세스를 실행합니다 이후 3000포트의 NestJS 서버를 실행합니다.
+
 ```bash
-$ yarn
+$ cd {project_folder}/script
+$ chmod +x start_server.sh
+$ ./start_server.sh
 ```
 
 # Running the app
@@ -39,32 +63,6 @@ chmod +x {project_folder}/script/examples/get_example.sh
 
 ./get_example.sh -d $DOMAIN(vpc | subnet) -o $OWNER_ID -r $REGION
 ```
-
-# Prerequisite
-
-## Database
-
-로컬 환경에 도커가 설치있어야합니다. [installation](https://docs.docker.com/engine/install/)
-
-도커를 설치한 이후 프로젝트 폴더의 script/setting_mysql.sh 파일을 실행시킵니다.
-
-```bash
-cd {project_folder}/script
-chmod +x setting_mysql.sh
-./setting_mysql.sh
-```
-
-해당 쉘 스크립트를 실행시키면 로컬 환경에 MySQL 데이터베이스 프로세스가 실행됩니다.
-
-### 데이터베이스 정보
-
-| Name        | Value     |
-| ----------- | --------- |
-| DB_PORT     | 3306      |
-| DB_USERNAME | root      |
-| DB_PASSWORD | 1234      |
-| DB_NAME     | carrot    |
-| DB_HOST     | localhost |
 
 # API
 

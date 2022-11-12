@@ -3,7 +3,6 @@ import { Entity, Column, OneToOne, JoinColumn, ManyToOne, PrimaryColumn } from '
 import { VpcCidrBlockStateEntity } from './vpcCidrBlockState.entity';
 import { VpcCidrBlockAssociationDTO } from '../dto/vpc.dto';
 import { VpcEntity } from './vpc.entity';
-// https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpcCidrBlockAssociation.html
 @Entity()
 export class VpcCidrBlockAssociationEntity {
   @PrimaryColumn({ type: 'varchar' })
@@ -11,7 +10,6 @@ export class VpcCidrBlockAssociationEntity {
 
   @Column({ type: 'varchar' })
   cidrBlock: string;
-  // https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpcCidrBlockState.html
 
   @OneToOne(() => VpcCidrBlockStateEntity, { cascade: true })
   @JoinColumn()

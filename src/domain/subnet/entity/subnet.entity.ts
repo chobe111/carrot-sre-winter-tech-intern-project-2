@@ -1,5 +1,3 @@
-// https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeSubnets.html
-// https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Subnet.html
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
 import { SubnetIpv6CidrBlockAssociationEntity } from './subnetIpv6CidrBlockAssociation.entity';
 import { TagDTO, TagEntity } from 'src/global/entity/tag.entity';

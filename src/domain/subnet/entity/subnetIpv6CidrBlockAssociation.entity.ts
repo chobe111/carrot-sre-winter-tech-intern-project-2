@@ -2,7 +2,6 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryColumn } from '
 import { SubnetIpv6CidrBlockAssociationDTO } from '../dto/subnet.dto';
 import { SubnetEntity } from './subnet.entity';
 import { SubnetCidrBlockStateEntity } from './subnetCidrBlockState.entity';
-// https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_SubnetIpv6CidrBlockAssociation.html
 @Entity()
 export class SubnetIpv6CidrBlockAssociationEntity {
   @PrimaryColumn({ type: 'varchar' })

@@ -286,12 +286,6 @@ AWS에 존재하고 특정 조건에 만족하는 Subnet 정보를 얻어오기 
 
 상세정보: [https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/APIReference/API_Subnet.html](https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/APIReference/API_Subnet.html)
 
-# Database
-
-AWS 공식 문서를 참고해 데이터베이스를 구성했습니다.
-
-[KarrotEERDiagram.pdf](Karrot%20SRE%20Winter%20Tech%20Internship%20Project%202%2041d8e5f67a244f8b90e807ead25a963d/KarrotEERDiagram.pdf)
-
 # Contact
 
 - **Author** - Myungki Cho

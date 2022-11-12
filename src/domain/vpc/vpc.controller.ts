@@ -8,7 +8,6 @@ export class VpcController {
   @Post()
   async createVPCInformation(@Body() postVpcRequestDTO: PostVpcRequestDTO): Promise<PostVpcResponseDTO> {
     const { config, filter } = postVpcRequestDTO;
-    console.log(postVpcRequestDTO);
     const results = await this.vpcService.getAWSResource(config, filter);
     await this.vpcService.saveAWSResource(results.vpcs, config.region);
     return {

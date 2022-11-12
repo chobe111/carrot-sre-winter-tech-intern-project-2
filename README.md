@@ -14,10 +14,6 @@
 
 로컬 환경에 도커가 설치되어있어야합니다. [installation](https://docs.docker.com/engine/install/)
 
-## Yarn
-
-로컬 환경에 yarn 이 설치되어있어야합니다. [installation](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)
-
 ### 데이터베이스 정보
 
 | Name        | Value     |
@@ -28,12 +24,16 @@
 | DB_NAME     | carrot    |
 | DB_HOST     | localhost |
 
+## Yarn
+
+로컬 환경에 yarn 이 설치되어있어야합니다. [installation](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)
+
 # Installation
 
 프로젝트 폴더의 script/start_server.sh 파일을 실행해 노드 패키지를 설치하고 MySQL 데이터베이스 프로세스를 실행합니다 이후 3000포트의 NestJS 서버를 실행합니다.
 
 ```bash
-$ cd {project_folder}/script
+$ cd {project_folder}/scripts
 $ chmod +x start_server.sh
 $ ./start_server.sh
 ```
@@ -54,12 +54,12 @@ $ yarn start:dev
 
 ```bash
 # 모든 AWS 자원을 데이터베이스에 저장하기
-chmod +x {project_folder}/script/examples/post_example.sh
+chmod +x {project_folder}/scripts/examples/post_example.sh
 
 ./post_example.sh -d $DOMAIN(vpc | subnet) -a $ACCESS_KEY_ID -s $SECRET_ACCESS_KEY -r $REGION
 
 # 데이터베이스에 저장된 모든 AWS 리소스 가져오기
-chmod +x {project_folder}/script/examples/get_example.sh
+chmod +x {project_folder}/scripts/examples/get_example.sh
 
 ./get_example.sh -d $DOMAIN(vpc | subnet) -o $OWNER_ID -r $REGION
 ```

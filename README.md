@@ -4,15 +4,9 @@
 
 # Description
 
-본 레포지토리는 **[2022 당근 마켓 WINTERTECH INTERNSHIP]** 의 **사이트 신뢰성 엔지니어(SRE)** 분야의 2번 과제를 구현한 결과물입니다.
+본 레포지토리는 [2022 당근 마켓 WINTERTECH INTERNSHIP]의 **사이트 신뢰성 엔지니어(SRE)** 분야의 2번 과제를 구현한 결과물입니다.
 
-NestJS 프레임워크를 사용해 구현했으며 특정 사용자가 **계정 정보**와 **리전 정보** 그리고 **필터링 정보**를 통해 원하는 값을 얻어 올 수록 구현했습니다.
-
-또한 로컬 데이터베이스와 AWS 환경 정보의 동기화를 위한 API 를 구현했습니다. 현재는 AWS 환경정보를 기준으로 로컬 데이터베이스를 동기화 합니다.
-
-일반적인 상황에서 사용자는 GET 메서드를 통해 로컬 혹은 글로벌 캐시 데이터베이스에서 인프라 정보를 가져오고 [Terraform](https://registry.terraform.io/) 등 IAC 정보의 변경이 생겼을 때 CACHE API 를 호출하여 캐시 데이터베이스의 정보를 동기화 합니다.
-
-추후에는 개발자가 캐시 데이터베이스에 생성한 자원 정보를 AWS 환경 정보에 동기화하고 생성한 자원 정보에서 발생할 수 있는 보안 문제점들을 Notify 하는 API 도 개발 할 수 있을 것이라 생각합니다.
+**[NestJS](https://nestjs.com/)** 프레임워크를 사용해 REST API 서버를 구현했으며 특정 사용자가 **계정 정보**와 **리전 정보** 그리고 **필터링 정보**를 AWS 자원을 데이터베이스에 생성하고 데이터베이스에 존재하는 자원을 얻어 올 수 있도록 구현했습니다.
 
 # Installation
 
@@ -30,17 +24,47 @@ $ yarn start
 $ yarn start:dev
 ```
 
-# Prerequisite
+# Example
 
-로컬 환경에 도커가 설치있어야합니다. [Installation](https://docs.docker.com/engine/install/)
-
-도커를 설치한 이후 프로젝트 폴더의 sciprt/setting_mysql.sh 파일을 실행시킵니다.
+프로젝트 폴더의 **script/examples** 폴더안에 GET 과 POST 메서드를 테스트 할 수 있는 쉘 파일을 정의했습니다.
 
 ```bash
-./script/setting_mysql.sh
+# 모든 AWS 자원을 데이터베이스에 저장하기
+chmod +x {project_folder}/script/examples/post_example.sh
+
+./post_example.sh -d $DOMAIN(vpc | subnet) -a $ACCESS_KEY_ID -s $SECRET_ACCESS_KEY -r $REGION
+
+# 데이터베이스에 저장된 모든 AWS 리소스 가져오기
+chmod +x {project_folder}/script/examples/get_example.sh
+
+./get_example.sh -d $DOMAIN(vpc | subnet) -o $OWNER_ID -r $REGION
+```
+
+# Prerequisite
+
+## Database
+
+로컬 환경에 도커가 설치있어야합니다. [installation](https://docs.docker.com/engine/install/)
+
+도커를 설치한 이후 프로젝트 폴더의 script/setting_mysql.sh 파일을 실행시킵니다.
+
+```bash
+cd {project_folder}/script
+chmod +x setting_mysql.sh
+./setting_mysql.sh
 ```
 
 해당 쉘 스크립트를 실행시키면 로컬 환경에 MySQL 데이터베이스 프로세스가 실행됩니다.
+
+### 데이터베이스 정보
+
+| Name        | Value     |
+| ----------- | --------- |
+| DB_PORT     | 3306      |
+| DB_USERNAME | root      |
+| DB_PASSWORD | 1234      |
+| DB_NAME     | carrot    |
+| DB_HOST     | localhost |
 
 # API
 
@@ -50,15 +74,15 @@ $ yarn start:dev
 
 ```bash
 POST /carrot/v1/vpc
-Host: localhost
-Content-type: application/json;charset=utf-8
+Host: localhost:3000
+Content-Type: application/json;charset=utf-8
 ```
 
 AWS API 를 통해 가져온 정보를 데이터베이스에 저장하고 Response 값을 반환합니다.
 
 ### Request
 
-**Parameter**
+**Parameter (Request body)**
 
 | Name   | Type                | Description                                                              |
 | ------ | ------------------- | ------------------------------------------------------------------------ |
@@ -74,24 +98,36 @@ AWS API 를 통해 가져온 정보를 데이터베이스에 저장하고 Respon
 | vpcs      | Vpc[]  | 생성된 VPC 정보입니다.                       |
 | nextToken | string | 다음 페이지 결과를 조회하기 위한 토큰입니다. |
 
+### Example
+
+```bash
+curl -H "Content-Type: application/json" \
+ -d '{"config": {
+	 		"region":"$YOUR_REGION",
+			"accessKeyId": "$YOUR_ACCESS_KEY_ID",
+			"secretAccessKey":"$YOUR_SECRET_ACCESS_KEY"}}' \
+-X POST "localhost:3000/carrot/v1/vpc" \
+```
+
 ## VPC 정보 가져오기
 
 ```bash
 GET /carrot/v1/vpc
-Host: localhost
-Content-type: application/json;charset=utf-8
+Host: localhost:3000
+Content-Type: application/json;charset=utf-8
 ```
 
 데이터베이스에 저장되어 있는 VPC 정보를 가져옵니다.
 
 ### Request
 
-**Parameter**
+**Parameter (Request body)**
 
-| Name       | Type                     | Description                                                                                       |
-| ---------- | ------------------------ | ------------------------------------------------------------------------------------------------- |
-| account_id | string                   | AWS 계정 정보를 입력합니다                                                                        |
-| filter     | DescribeCacheVpcsRequest | 데이터베이스에 저장되어있는 VPC 데티어중 특정 조건에 맞는 정보를 가져오기 위해 필요한 정보입니다. |
+| Name    | Type                     | Description                                                                                       |
+| ------- | ------------------------ | ------------------------------------------------------------------------------------------------- |
+| ownerId | string                   | AWS 계정 정보를 입력합니다                                                                        |
+| filter  | DescribeCacheVpcsRequest | 데이터베이스에 저장되어있는 VPC 데티어중 특정 조건에 맞는 정보를 가져오기 위해 필요한 정보입니다. |
+| region  | string                   | 특정 자원의 리전 정보입니다.                                                                      |
 
 ### Response
 
@@ -101,50 +137,73 @@ Content-type: application/json;charset=utf-8
 | ---- | ----- | --------------------------------------- |
 | vpcs | Vpc[] | 데이터베이스에 존재하는 VPC 정보입니다. |
 
+### Example
+
+```bash
+curl -X GET \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{"ownerId":"$YOUR_OWNER_ID", "region": "$YOUR_REGION_NAME"}' \
+ "localhost:3000/carrot/v1/vpc"
+```
+
 ## SUBNET 정보 생성하기
 
 ```bash
 POST /carrot/v1/subnet
-Host: localhost
-Content-type: application/json;charset=utf-8
+Host: localhost:3000
+Content-Type: application/json;charset=utf-8
 ```
 
 ### Request
 
-**Parameter**
+**Parameter (Request body)**
 
 | Name   | Type                   | Description                                                              |
 | ------ | ---------------------- | ------------------------------------------------------------------------ |
 | config | AWSInstanceConfig      | 특정 계정의 특정 리전에 대한 AWS API 객체 생성을 위해 필요한 정보입니다. |
-| filter | DescribeSubnetsRequest | 특정 조건에 맞는 Subnet 정보를 가져오기 위해 필요한 정보입니다.          |
+| filter | DescribeSubnetsRequest | 특정 조건에 맞는 VPC 정보를 가져오기 위해 필요한 정보입니다.             |
 
 ### Response
 
 **Parameter**
 
-| Name      | Type     | Description                                  |
-| --------- | -------- | -------------------------------------------- |
-| subnets   | Subnet[] | 생성된 Subnet 정보입니다.                    |
-| nextToken | string   | 다음 페이지 결과를 조회하기 위한 토큰입니다. |
+| Name      | Type     | Description                                                              |
+| --------- | -------- | ------------------------------------------------------------------------ |
+| subnets   | Subnet[] | 특정 계정의 특정 리전에 대한 AWS API 객체 생성을 위해 필요한 정보입니다. |
+| nextToken | string   | 특정 조건에 맞는 VPC 정보를 가져오기 위해 필요한 정보입니다.             |
+
+### Example
+
+```bash
+curl - X POST \
+ -H "Content-Type: application/json" \
+ -H "Accept: application/json" \
+ -d '{"config": {
+	 		"region":"$YOUR_REGION",
+			"accessKeyId": "$YOUR_ACCESS_KEY_ID",
+			"secretAccessKey":"$YOUR_SECRET_ACCESS_KEY"}}'\
+"localhost:3000/carrot/v1/subnet"
+```
 
 ## SUBNET 정보 가져오기
 
 ```bash
 GET /carrot/v1/subnet
-Host: localhost
-Content-type: application/json;charset=utf-8
+Host: localhost:3000
+Content-Type: application/json;charset=utf-8
 ```
 
 데이터베이스에 저장되어 있는 SUBNET 정보를 가져옵니다.
 
 ### Request
 
-**Parameter**
+**Parameter (Request body)**
 
-| Name       | Type                        | Description                                                                                          |
-| ---------- | --------------------------- | ---------------------------------------------------------------------------------------------------- |
-| account_id | string                      | AWS 계정 정보를 입력합니다                                                                           |
-| filter     | DescribeCacheSubnetsRequest | 데이터베이스에 저장되어있는 Subnet 데티어중 특정 조건에 맞는 정보를 가져오기 위해 필요한 정보입니다. |
+| Name | Type | Description |
+| ownerId | string | AWS 계정 정보를 입력합니다 |
+| filter | DescribeCacheSubnetsRequest | 데이터베이스에 저장되어있는 Subnet 데티어중 특정 조건에 맞는 정보를 가져오기 위해 필요한 정보입니다. |
+| region | string | 특정 자원의 리전 정보입니다. |
 
 ### Response
 
@@ -154,23 +213,15 @@ Content-type: application/json;charset=utf-8
 | ------- | -------- | ------------------------------------------ |
 | subnets | Subnet[] | 데이터베이스에 존재하는 Subnet 정보입니다. |
 
-## 데이터베이스 동기화 하기
+### Example
 
 ```bash
-POST /carrot/v1/cache/sync
-Host: localhost
-Content-type: application/json;charset=utf-8
+curl -X GET \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{"ownerId":"$YOUR_OWNER_ID", "region": "$YOUR_REGION_NAME"}' \
+ "localhost:3000/carrot/v1/subnet"
 ```
-
-AWS 환경에 맞추어 특정 계정의 데이터베이스 데이터를 동기화 합니다.
-
-### Request
-
-**Parameter**
-
-| Name   | Type              | Description                                                              |
-| ------ | ----------------- | ------------------------------------------------------------------------ |
-| config | AWSInstanceConfig | 특정 계정의 특정 리전에 대한 AWS API 객체 생성을 위해 필요한 정보입니다. |
 
 # Type
 
@@ -235,6 +286,12 @@ AWS에 존재하고 특정 조건에 만족하는 Subnet 정보를 얻어오기 
 ## Subnet
 
 상세정보: [https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/APIReference/API_Subnet.html](https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/APIReference/API_Subnet.html)
+
+# Database
+
+AWS 공식 문서를 참고해 데이터베이스를 구성했습니다.
+
+[KarrotEERDiagram.pdf](Karrot%20SRE%20Winter%20Tech%20Internship%20Project%202%2041d8e5f67a244f8b90e807ead25a963d/KarrotEERDiagram.pdf)
 
 # Contact
 

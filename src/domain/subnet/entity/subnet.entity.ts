@@ -10,19 +10,19 @@ export class SubnetEntity {
   @Column({ nullable: true, type: 'boolean' })
   assignIpv6AddressOnCreation: boolean;
 
-  @Column({ nullable: true, type: 'string' })
+  @Column({ nullable: true, type: 'varchar' })
   availabilityZone: string;
 
-  @Column({ nullable: true, type: 'string' })
+  @Column({ nullable: true, type: 'varchar' })
   availabilityZoneId: string;
 
   @Column({ nullable: true, type: 'integer' })
   availableIpAddressCount: number;
 
-  @Column({ nullable: true, type: 'string' })
+  @Column({ nullable: true, type: 'varchar' })
   cidrBlock: string;
 
-  @Column({ nullable: true, type: 'string' })
+  @Column({ nullable: true, type: 'varchar' })
   customerOwnedIpv4Pool: string;
 
   @Column({ nullable: true, type: 'boolean' })
@@ -49,10 +49,10 @@ export class SubnetEntity {
   @Column({ nullable: true, type: 'boolean' })
   mapPublicIpOnLaunch: boolean;
 
-  @Column({ nullable: true, type: 'string' })
+  @Column({ nullable: true, type: 'varchar' })
   outpostArn: string;
 
-  @Column({ nullable: true, type: 'string' })
+  @Column({ nullable: true, type: 'varchar' })
   ownerId: string;
 
   @OneToOne(() => PrivateDnsNameOptionsOnLaunchEntity, {
@@ -62,20 +62,20 @@ export class SubnetEntity {
   @JoinColumn()
   privateDnsNameOptionsOnLaunch: PrivateDnsNameOptionsOnLaunchEntity;
 
-  @Column({ nullable: true, type: 'string' })
+  @Column({ nullable: true, type: 'varchar' })
   state: string;
 
-  @Column({ nullable: true, type: 'string' })
+  @Column({ nullable: true, type: 'varchar' })
   subnetArn: string;
 
-  @PrimaryColumn({ type: 'string' })
+  @PrimaryColumn({ type: 'varchar' })
   subnetId: string;
 
   @ManyToMany(() => TagEntity, { cascade: true, nullable: true })
   @JoinTable()
   tags: TagEntity[];
 
-  @Column({ nullable: true, type: 'string' })
+  @Column({ nullable: true, type: 'varchar' })
   vpcId: string;
 
   static create(dto: SubnetDTO) {

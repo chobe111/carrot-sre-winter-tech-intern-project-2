@@ -17,7 +17,7 @@ export class PrivateDnsNameOptionsOnLaunchEntity {
   @Column({ type: 'boolean' })
   enableResourceNameDnsARecord: boolean;
 
-  @Column({ type: 'string' })
+  @Column({ type: 'varchar' })
   hostnameType: string;
 
   static create(dto: PrivateDnsNameOptionsOnLaunchDTO) {

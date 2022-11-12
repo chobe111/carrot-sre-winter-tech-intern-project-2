@@ -10,10 +10,10 @@ export class TagEntity {
   @PrimaryGeneratedColumn({ type: 'integer' })
   id: number;
 
-  @Column({ type: 'string' })
+  @Column({ type: 'varchar' })
   key: string;
 
-  @Column({ type: 'string' })
+  @Column({ type: 'varchar' })
   value: string;
 
   static create(dto: TagDTO) {

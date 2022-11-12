@@ -6,10 +6,10 @@ export class VpcCidrBlockStateEntity {
   @PrimaryGeneratedColumn({ type: 'integer' })
   id: number;
 
-  @Column({ nullable: true, type: 'string' })
+  @Column({ nullable: true, type: 'varchar' })
   state: string;
 
-  @Column({ default: '', nullable: true, type: 'string' })
+  @Column({ default: '', nullable: true, type: 'varchar' })
   statusMessage: string;
 
   static create(dto: VpcCidrBlockStateDTO) {

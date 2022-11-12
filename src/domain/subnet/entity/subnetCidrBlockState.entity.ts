@@ -6,10 +6,10 @@ export class SubnetCidrBlockStateEntity {
   @PrimaryGeneratedColumn({ type: 'integer' })
   id: number;
 
-  @Column({ type: 'string' })
+  @Column({ type: 'varchar' })
   state: string;
 
-  @Column({ type: 'string' })
+  @Column({ type: 'varchar' })
   statusMessage: string;
 
   static create(dto: SubnetCidrBlockStateDTO) {

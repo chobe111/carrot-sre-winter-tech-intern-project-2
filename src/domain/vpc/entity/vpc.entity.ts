@@ -13,17 +13,17 @@ export enum InstanceTenancy {
 
 @Entity()
 export class VpcEntity {
-  @PrimaryColumn({ type: 'string' })
+  @PrimaryColumn({ type: 'varchar' })
   vpcId: string;
 
-  @Column({ nullable: true, type: 'string' })
+  @Column({ nullable: true, type: 'varchar' })
   cidrBlock: string;
 
   // one to many
   @OneToMany(() => VpcCidrBlockAssociationEntity, (vpcAssocition) => vpcAssocition.vpc, { cascade: true })
   cidrBlockAssociationSet: VpcCidrBlockAssociationEntity[];
 
-  @Column({ nullable: true, type: 'string' })
+  @Column({ nullable: true, type: 'varchar' })
   dhcpOptionsId: string;
 
   @Column({ nullable: true, type: 'enum', enum: InstanceTenancy })
@@ -35,7 +35,7 @@ export class VpcEntity {
   @Column({ nullable: true, type: 'boolean' })
   isDefault: boolean;
 
-  @Column({ nullable: true, type: 'string' })
+  @Column({ nullable: true, type: 'varchar' })
   ownerId: string;
 
   @Column({ nullable: true, type: 'enum', enum: State })

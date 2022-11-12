@@ -5,10 +5,10 @@ import { SubnetCidrBlockStateEntity } from './subnetCidrBlockState.entity';
 // https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_SubnetIpv6CidrBlockAssociation.html
 @Entity()
 export class SubnetIpv6CidrBlockAssociationEntity {
-  @PrimaryColumn({ type: 'string' })
+  @PrimaryColumn({ type: 'varchar' })
   associationId: string;
 
-  @Column({ type: 'string' })
+  @Column({ type: 'varchar' })
   ipv6CidrBlock: string;
 
   @OneToOne(() => SubnetCidrBlockStateEntity, { cascade: true })

@@ -200,10 +200,11 @@ Content-Type: application/json;charset=utf-8
 
 **Parameter (Request body)**
 
-| Name | Type | Description |
-| ownerId | string | AWS 계정 정보를 입력합니다 |
-| filter | DescribeCacheSubnetsRequest | 데이터베이스에 저장되어있는 Subnet 데티어중 특정 조건에 맞는 정보를 가져오기 위해 필요한 정보입니다. |
-| region | string | 특정 자원의 리전 정보입니다. |
+| Name    | Type                        | Description                                                                                          |
+| ------- | --------------------------- | ---------------------------------------------------------------------------------------------------- |
+| ownerId | string                      | AWS 계정 정보를 입력합니다                                                                           |
+| filter  | DescribeCacheSubnetsRequest | 데이터베이스에 저장되어있는 Subnet 데티어중 특정 조건에 맞는 정보를 가져오기 위해 필요한 정보입니다. |
+| region  | string                      | 특정 자원의 리전 정보입니다.                                                                         |
 
 ### Response
 

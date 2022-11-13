@@ -30,7 +30,7 @@
 
 # Installation
 
-프로젝트 폴더의 script/start_server.sh 파일을 실행해 노드 패키지를 설치하고 MySQL 데이터베이스 프로세스를 실행합니다 이후 3000포트의 NestJS 서버를 실행합니다.
+프로젝트 폴더의 scripts/start_server.sh 파일을 실행해 노드 패키지를 설치하고 MySQL 데이터베이스 프로세스를 실행합니다 이후 3000포트의 NestJS 서버를 실행합니다.
 
 ```bash
 $ cd {project_folder}/scripts
@@ -50,7 +50,7 @@ $ yarn start:dev
 
 # Example
 
-프로젝트 폴더의 **script/examples** 폴더안에 GET 과 POST 메서드를 테스트 할 수 있는 쉘 파일을 정의했습니다.
+프로젝트 폴더의 **scripts/examples** 폴더안에 GET 과 POST 메서드를 테스트 할 수 있는 쉘 파일을 정의했습니다.
 
 ```bash
 # 모든 AWS 자원을 데이터베이스에 저장하기
